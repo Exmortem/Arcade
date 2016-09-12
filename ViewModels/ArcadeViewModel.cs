@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Arcade.Languages;
 using Arcade.Models;
 
 namespace Arcade.ViewModels
@@ -11,6 +12,7 @@ namespace Arcade.ViewModels
         public static ArcadeViewModel Instance => _instance ?? (_instance = new ArcadeViewModel());
 
         public static Settings Settings => Settings.Instance;
+        public static Language Languages => Language.Instance;
 
         private int _mgpGained;
         private int _mgpPerHour;

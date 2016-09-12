@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Arcade.Languages;
 using Arcade.Models;
 using Arcade.Utilities;
 using Arcade.ViewModels;
@@ -15,14 +17,21 @@ namespace Arcade.Tasks
 {
     internal static class Behaviors
     {
+        static Behaviors()
+        {
+            Cuff = Language.Instance.Cuff;
+            Monster = Language.Instance.Monster;
+            Crystal = Language.Instance.Crystal;
+            Moogles = Language.Instance.Moogles;
+        }
+
         public static DateTime TimeToSwitchGame;
         public static string CurrentGame = "None";
 
-        private const string
-            Cuff = "Cuff-a-Cur",
-            Monster = "Monster Toss",
-            Crystal = "Crystal Tower Stryker",
-            Moogles = "Moogles Paw";
+        public static readonly string Cuff;
+        public static readonly string Monster;
+        public static readonly string Crystal;
+        public static readonly string Moogles;
 
         public static async Task<bool> Main()
         {
@@ -47,8 +56,8 @@ namespace Arcade.Tasks
                 if (ArcadeViewModel.Instance.MgpGained >= Settings.Instance.MgpStopPoint)
                 {
                     GamelogManager.MessageRecevied -= Mgp.MessageReceived;
-                    Logging.Write(Colors.Red, $@"[Arcade] Stopped because we have reached MGP limit.");
-                    TreeRoot.Stop(" Stopped because we have reached MGP limit.");
+                    Logging.Write(Colors.Red, Language.Instance.LogStopMgpLimit);
+                    TreeRoot.Stop();
                     return false;
                 }
             }
@@ -61,67 +70,62 @@ namespace Arcade.Tasks
 
             if (DateTime.Now < TimeToSwitchGame)
             {
-                // ReSharper disable once SwitchStatementMissingSomeCases
-                switch (CurrentGame)
+                if (CurrentGame == Cuff)
                 {
-                    case Cuff:
-                        return await CuffACur.Play();
-                    case Monster:
-                        return await MonsterToss.Play();
-                    case Crystal:
-                        return await CrystalTowerStryker.Play();
-                    case Moogles:
-                        return await MooglesPaw.Play();
+                    return await CuffACur.Play();
+                }
+
+                if (CurrentGame == Monster)
+                {
+                    return await MonsterToss.Play();
+                }
+
+                if (CurrentGame == Crystal)
+                {
+                    return await CrystalTowerStryker.Play();
+                }
+
+                if (CurrentGame == Moogles)
+                {
+                    return await MooglesPaw.Play();
                 }
             }
 
             var gamesList = GenerateGamesList;
             var count = gamesList.Count;
 
-            if (count < 2)
-            {
-                if (Settings.Instance.CuffACurr && await CuffACur.Play()) return true;
-                if (Settings.Instance.MonsterToss && await MonsterToss.Play()) return true;
-                if (Settings.Instance.CrystalTowerStryker && await CrystalTowerStryker.Play()) return true;
-                return Settings.Instance.MooglesPaw && await MooglesPaw.Play();
-            }
-
             var randomIndex = new Random().Next(count);
-            var newGame = gamesList[randomIndex];
+            var newGame = count == 0 ? CurrentGame : gamesList[randomIndex];
 
-            Logging.Write(Colors.DodgerBlue, $@"[Arcade] Picking {newGame} as our next game.");
+            Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogPickingGame} {newGame}");
+            TimeToSwitchGame = DateTime.Now.AddMinutes(new Random().Next(Settings.Instance.MinMinutes, Settings.Instance.MaxMinutes));
+            Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogSwitchingGamesAgainAt} {TimeToSwitchGame.ToShortTimeString()}.");
 
-            // ReSharper disable once SwitchStatementMissingSomeCases
-            switch (newGame)
+            if (newGame == Cuff)
             {
-                case Cuff:
-                    CurrentGame = Cuff;
-                    TimeToSwitchGame = DateTime.Now.AddMinutes(new Random().Next(Settings.Instance.MinMinutes, Settings.Instance.MaxMinutes));
-                    Logging.Write(Colors.DodgerBlue, $@"[Arcade] Switching games again at {TimeToSwitchGame.ToShortTimeString()}.");
-                    return await CuffACur.Play();
-
-                case Monster:
-                    CurrentGame = Monster;
-                    TimeToSwitchGame = DateTime.Now.AddMinutes(new Random().Next(Settings.Instance.MinMinutes, Settings.Instance.MaxMinutes));
-                    Logging.Write(Colors.DodgerBlue, $@"[Arcade] Switching games again at {TimeToSwitchGame.ToShortTimeString()}.");
-                    return await MonsterToss.Play();
-
-                case Crystal:
-                    CurrentGame = Crystal;
-                    TimeToSwitchGame = DateTime.Now.AddMinutes(new Random().Next(Settings.Instance.MinMinutes, Settings.Instance.MaxMinutes));
-                    Logging.Write(Colors.DodgerBlue, $@"[Arcade] Switching games again at {TimeToSwitchGame.ToShortTimeString()}.");
-                    return await CrystalTowerStryker.Play();
-
-                case Moogles:
-                    CurrentGame = Moogles;
-                    TimeToSwitchGame = DateTime.Now.AddMinutes(new Random().Next(Settings.Instance.MinMinutes, Settings.Instance.MaxMinutes));
-                    Logging.Write(Colors.DodgerBlue, $@"[Arcade] Switching games again at {TimeToSwitchGame.ToShortTimeString()}.");
-                    return await MooglesPaw.Play();
+                CurrentGame = Cuff;
+                return await CuffACur.Play();
             }
 
-            return true;
-        }
+            if (newGame == Monster)
+            {
+                CurrentGame = Monster;
+                return await MonsterToss.Play();
+            }
 
+            if (newGame == Crystal)
+            {
+                CurrentGame = Crystal;
+                return await CrystalTowerStryker.Play();
+            }
+
+            if (newGame != Moogles)
+                return true;
+
+            CurrentGame = Moogles;
+            return await MooglesPaw.Play();
+        }
+        
         private static List<string> GenerateGamesList
         {
             get

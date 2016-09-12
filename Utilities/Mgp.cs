@@ -9,6 +9,7 @@ namespace Arcade.Utilities
     public static class Mgp
     {
         public static DateTime StartTime;
+        public static bool IsRunning;
         private static readonly Regex MgpRegex = new Regex(@"You\sobtain\s([0-9]*)\sMGP");
         private static readonly Regex CnMgpRegex = new Regex(@"了([0-9]*)金");
 

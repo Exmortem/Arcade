@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
+using Arcade.Languages;
 using Arcade.Models;
 using Arcade.Tasks;
 using Arcade.Utilities;
 using Arcade.ViewModels;
 using Arcade.Views;
 using ff14bot;
-using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Navigation;
 using Siune.Client;
@@ -18,8 +17,6 @@ namespace Arcade
 {
     public class Arcade
     {
-        public static byte Localization;
-
         public Arcade()
         {
             SiuneSession.RegisterProduct(18, "Arcade");
@@ -28,21 +25,38 @@ namespace Arcade
             Navigator.NavigationProvider = new GaiaNavigator();
             ArcadeViewModel.Instance.RunningTime = "00:00:00";
 
-            // 0 = Japanese, 1 = English, 2 = German, 3 = French, 4 = Chinese, 5 = Korean?  Korean isn't supported anyway though
             var patternFinder = new GreyMagic.PatternFinder(Core.Memory);
             var intPtr = patternFinder.Find("Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
-            Localization = Core.Memory.Read<byte>(intPtr);        
+            var languageByte = Core.Memory.Read<byte>(intPtr);
+
+            switch (languageByte)
+            {
+                case 0:
+                    Language.Instance.ClientLanguage = Languages.Languages.Japanese;
+                    break;
+                case 1:
+                    Language.Instance.ClientLanguage = Languages.Languages.English;
+                    break;
+                case 2:
+                    Language.Instance.ClientLanguage = Languages.Languages.German;
+                    break;
+                case 3:
+                    Language.Instance.ClientLanguage = Languages.Languages.French;
+                    break;
+                case 4:
+                    Language.Instance.ClientLanguage = Languages.Languages.Chinese;
+                    break;
+                default:
+                    Language.Instance.ClientLanguage = Languages.Languages.English;
+                    break;
+            }
         }
 
         public void Start()
         {
-            if (Localization == 4)
-            {
-                Logging.Write(Colors.DodgerBlue, $@"[Arcade] 运行中。");
-            }
-
             GamelogManager.MessageRecevied += Mgp.MessageReceived;
             Mgp.StartTime = DateTime.Now;
+            Mgp.IsRunning = true;
             Behaviors.CurrentGame = "None";
             Behaviors.TimeToSwitchGame = DateTime.Now;
 
@@ -56,6 +70,7 @@ namespace Arcade
 
         public void Stop()
         {
+            Mgp.IsRunning = false;
             GamelogManager.MessageRecevied -= Mgp.MessageReceived;
         }
 

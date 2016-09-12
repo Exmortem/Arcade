@@ -2,6 +2,11 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
+using Arcade.Languages;
+using Arcade.Tasks;
+using Arcade.Utilities;
+using Arcade.ViewModels;
 using ff14bot.Helpers;
 
 namespace Arcade.Models
@@ -134,6 +139,13 @@ namespace Arcade.Models
             set
             {
                 _cuffACurr = value;
+
+                if (value == false && Mgp.IsRunning && Behaviors.CurrentGame == Behaviors.Cuff)
+                {
+                    Behaviors.TimeToSwitchGame = DateTime.Now;
+                    //Logging.Write(Colors.DodgerBlue, Language.Instance.LogDontPlayCuffAnymore);
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -146,6 +158,13 @@ namespace Arcade.Models
             set
             {
                 _monsterToss = value;
+
+                if (value == false && Mgp.IsRunning && Behaviors.CurrentGame == Behaviors.Monster)
+                {
+                    Behaviors.TimeToSwitchGame = DateTime.Now;
+                    //Logging.Write(Colors.DodgerBlue, Language.Instance.LogDontPlayMonsterAnymore);
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -158,6 +177,13 @@ namespace Arcade.Models
             set
             {
                 _crystalTowerStryker = value;
+
+                if (value == false && Mgp.IsRunning && Behaviors.CurrentGame == Behaviors.Crystal)
+                {
+                    Behaviors.TimeToSwitchGame = DateTime.Now;
+                    //Logging.Write(Colors.DodgerBlue, Language.Instance.LogDontPlayCrystalAnymore);
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -170,6 +196,13 @@ namespace Arcade.Models
             set
             {
                 _mooglesPaw = value;
+
+                if (value == false && Mgp.IsRunning && Behaviors.CurrentGame == Behaviors.Moogles)
+                {
+                    Behaviors.TimeToSwitchGame = DateTime.Now;
+                    //Logging.Write(Colors.DodgerBlue, Language.Instance.LogDontPlayMoogleAnymore);
+                }
+
                 OnPropertyChanged();
             }
         }
