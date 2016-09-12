@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Arcade;component/Styles/CheckBox.xaml" />
+        <ResourceDictionary Source="/Arcade;component/Styles/Buttons.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

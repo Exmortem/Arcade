@@ -1,0 +1,102 @@
+﻿<Window x:Class="Arcade.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:Arcade.ViewModels"
+        xmlns:userControls="clr-namespace:Arcade.Views.UserControls"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="#FF111111"
+        SizeToContent="Height"
+        Title="Arcade" Width="330">
+    
+    <Window.DataContext>
+        <viewModels:ArcadeViewModel />
+    </Window.DataContext>
+         
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Arcade;component/Styles/Arcade.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <StackPanel>
+        <Grid Background="#FF111111" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Margin="20,5,5,5" Foreground="MediumSeaGreen" FontSize="20" Text="Arcade: MGP Farmer">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" />
+                </TextBlock.Effect>
+            </TextBlock>
+            <Button Grid.Row="0" Grid.Column="1" Click="ButtonBase_OnClick" Style="{DynamicResource CloseButton}" HorizontalAlignment="Right" Margin="5" />
+
+        </Grid>
+
+        <Grid Margin="0,10,0,15" HorizontalAlignment="Center" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Background="#FF111111">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+                
+            <CheckBox Margin="5,5" Grid.Row="1" Grid.Column="0" Content="Play Cuff-a-Cur" IsChecked="{Binding Settings.Instance.CuffACurr, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+            <CheckBox Margin="5,5" Grid.Row="1" Grid.Column="1" Content="Play Crystal Tower Stryker" IsChecked="{Binding Settings.Instance.CrystalTowerStryker, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+            <CheckBox Margin="5,0" Grid.Row="2" Grid.Column="0" Content="Play Monster Toss" IsChecked="{Binding Settings.Instance.MonsterToss, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+            <CheckBox Margin="5,0" Grid.Row="2" Grid.Column="1" Content="Play Moogles Paw" IsChecked="{Binding Settings.Instance.MooglesPaw, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+
+            <StackPanel Margin="5,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                <userControls:Numeric Margin="2,3" TextBlockValue="Minimum Minutes Playing Game: " TextBoxWidth="30" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MinMinutes, Mode=TwoWay}" />
+                <userControls:Numeric TextBlockValue="Maximum Minutes Playing Game: " TextBoxWidth="30" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MaxMinutes, Mode=TwoWay}" />
+            </StackPanel>
+
+            <StackPanel Margin="5,5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+
+                <CheckBox Margin="0,5" Style="{DynamicResource Checkbox}" Content="Play Jumbo Cactpot" IsChecked="{Binding Settings.Instance.JumboCactpot, Mode=TwoWay}" />
+
+                <CheckBox Content="Fast Mode (Play as Fast as Possible)" IsChecked="{Binding Settings.Instance.FastMode, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+              
+                <StackPanel Margin="0,5" Orientation="Horizontal">
+                    <CheckBox Content="Stop After Getting MGP: " IsChecked="{Binding Settings.Instance.StopIfReachCertainMgp, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+                    <userControls:Numeric TextBlockValue="" TextBoxWidth="100" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MgpStopPoint, Mode=TwoWay}" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="5,0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <TextBlock Text="MGP Gained So Far: " Foreground="White" />
+                <TextBlock Text="{Binding Instance.MgpGained}" Foreground="White" />
+            </StackPanel>
+
+            <StackPanel Margin="5,0" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <TextBlock Text="MGP Per Hour: " Foreground="White" />
+                <TextBlock Text="{Binding Instance.MgpPerHour}" Foreground="White" />
+            </StackPanel>
+
+            <StackPanel Margin="5,0" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <TextBlock Text="Games Played: " Foreground="White" />
+                <TextBlock Text="{Binding Instance.GamesPlayed}" Foreground="White" />
+            </StackPanel>
+
+            <StackPanel Margin="5,0" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <TextBlock Text="Running Time: " Foreground="White" />
+                <TextBlock Text="{Binding Instance.RunningTime}" Foreground="White" />
+            </StackPanel>
+
+        </Grid>
+    </StackPanel>
+
+</Window>

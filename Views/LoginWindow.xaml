@@ -1,0 +1,39 @@
+﻿<Window x:Class="Arcade.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:viewModels="clr-namespace:Arcade.ViewModels"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Height="170"
+        Width="250"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Window.DataContext>
+        <viewModels:ArcadeViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Arcade;component/Styles/Arcade.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <StackPanel Background="#FF111111" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+  
+        <TextBlock HorizontalAlignment="Center" Margin="5" Foreground="MediumSeaGreen" FontSize="20" Text="Arcade: Login">
+            <TextBlock.Effect>
+                <DropShadowEffect ShadowDepth="0" Color="Black" />
+            </TextBlock.Effect>
+        </TextBlock>
+
+        <TextBox Margin="0,10,0,0" Name="TxtEmail" Height="25" VerticalContentAlignment="Center" LostFocus="CheckAuth" Text="{Binding Settings.Instance.Email, Mode=TwoWay}" Width="200" />
+        <TextBox Margin="0,5" Height="25" VerticalContentAlignment="Center"  Name="TxtKey" LostFocus="CheckAuth" Text="{Binding Settings.Instance.Key, Mode=TwoWay}" Width="200" />
+
+        <Button Click="TestKey" Margin="0,10,0,5" Style="{DynamicResource Button}" Width="200" Content="Login" />
+        <TextBlock Name="TxtAuth" HorizontalAlignment="Center" Foreground="Red" />
+            
+    </StackPanel>
+    
+
+</Window>
