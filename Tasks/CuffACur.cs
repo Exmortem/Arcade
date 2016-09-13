@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Arcade.Models;
+using Arcade.Utilities;
 using Arcade.ViewModels;
 using Buddy.Coroutines;
 using Clio.Utilities;
@@ -27,7 +28,7 @@ namespace Arcade.Tasks
 
         public static async Task<bool> Play()
         {
-            await Movement.MoveToLocation(Location, 4);
+            await Movement.MoveToLocation(Location, 3);
 
             await OpenClosestMachine();
 
@@ -71,7 +72,10 @@ namespace Arcade.Tasks
             // Pair 2 is your payout, 3 = Brutal (5 MGP), 2 = Punishing (3 MGP), 1 = Brusing (2 MGP), 0 = Weak (0 MGP)
             // Pair 3 is the displayed score on the popup
 
-            RaptureAtkUnitManager.GetWindowByName("PunchingMachine").SendAction(3, 3, 0xB, payout, 3, 3, score);
+            var window = RaptureAtkUnitManager.GetWindowByName("PunchingMachine");
+            WindowInteraction.SendAction(window, 3, 3, 0xB, payout, 3, 3, score);
+
+            //RaptureAtkUnitManager.GetWindowByName("PunchingMachine").SendAction(3, 3, 0xB, payout, 3, 3, score);
             await Coroutine.Wait(10000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "GoldSaucerReward"));
         }
     }

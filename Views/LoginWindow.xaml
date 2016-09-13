@@ -4,7 +4,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Height="170"
-        Width="250"
+        Width="300"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Window.DataContext>
@@ -27,8 +27,8 @@
             </TextBlock.Effect>
         </TextBlock>
 
-        <TextBox Margin="0,10,0,0" Name="TxtEmail" Height="25" VerticalContentAlignment="Center" LostFocus="CheckAuth" Text="{Binding Settings.Instance.Email, Mode=TwoWay}" Width="200" />
-        <TextBox Margin="0,5" Height="25" VerticalContentAlignment="Center"  Name="TxtKey" LostFocus="CheckAuth" Text="{Binding Settings.Instance.Key, Mode=TwoWay}" Width="200" />
+        <TextBox TextAlignment="Center" Margin="0,10,0,0" Name="TxtEmail" Height="25" VerticalContentAlignment="Center" LostFocus="CheckAuth" Text="{Binding Settings.Instance.Email, Mode=TwoWay}" Width="250" />
+        <TextBox TextAlignment="Center" Margin="0,5" Height="25" VerticalContentAlignment="Center"  Name="TxtKey" LostFocus="CheckAuth" Text="{Binding Settings.Instance.Key, Mode=TwoWay}" Width="250" />
 
         <Button Click="TestKey" Margin="0,10,0,5" Style="{DynamicResource Button}" Width="200" Content="Login" />
         <TextBlock Name="TxtAuth" HorizontalAlignment="Center" Foreground="Red" />

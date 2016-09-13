@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using Arcade.Languages;
 using Arcade.Models;
 using Arcade.Tasks;
@@ -7,6 +9,7 @@ using Arcade.Utilities;
 using Arcade.ViewModels;
 using Arcade.Views;
 using ff14bot;
+using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Navigation;
 using Siune.Client;
@@ -19,15 +22,39 @@ namespace Arcade
     {
         public Arcade()
         {
-            SiuneSession.RegisterProduct(18, "Arcade");
+            SiuneSession.RegisterProduct(18, "Arcade", Log);
             SiuneSession.SetProduct(18, Settings.Instance.Key);
-            Navigator.PlayerMover = new SlideMover();
-            Navigator.NavigationProvider = new GaiaNavigator();
             ArcadeViewModel.Instance.RunningTime = "00:00:00";
 
-            var patternFinder = new GreyMagic.PatternFinder(Core.Memory);
-            var intPtr = patternFinder.Find("Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
-            var languageByte = Core.Memory.Read<byte>(intPtr);
+            //var patternFinder = new GreyMagic.PatternFinder(Core.Memory);
+            //var intPtr = patternFinder.Find("Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
+            //var languageByte = Core.Memory.Read<byte>(intPtr);
+
+            int languageByte;
+
+            var sprint = Actionmanager.CurrentActions.Values.FirstOrDefault(r => r.Id == 3);
+
+            if (sprint == null)
+            {
+                languageByte = 1;
+            }
+            else
+            {
+                switch (sprint.LocalizedName)
+                {
+                    case "Sprint":
+                        languageByte = 1;
+                        break;
+                    case "冲刺":
+                        languageByte = 4;
+                        break;
+                    default:
+                        languageByte = 1;
+                        break;
+                }
+            }
+
+            //Language.Instance.ClientLanguage = Languages.Languages.Chinese;
 
             switch (languageByte)
             {
@@ -36,6 +63,7 @@ namespace Arcade
                     break;
                 case 1:
                     Language.Instance.ClientLanguage = Languages.Languages.English;
+                    Logging.Write(Colors.DodgerBlue, $@"[Arcade] Language: English");
                     break;
                 case 2:
                     Language.Instance.ClientLanguage = Languages.Languages.German;
@@ -45,6 +73,7 @@ namespace Arcade
                     break;
                 case 4:
                     Language.Instance.ClientLanguage = Languages.Languages.Chinese;
+                    Logging.Write(Colors.DodgerBlue, $@"[Arcade] Language: Chinese");
                     break;
                 default:
                     Language.Instance.ClientLanguage = Languages.Languages.English;
@@ -52,8 +81,23 @@ namespace Arcade
             }
         }
 
+        private static void Log(string text)
+        {
+            Logging.Write(Colors.DodgerBlue, $@"[Arcade] {text}");
+        }
+
         public void Start()
         {
+            if (Navigator.PlayerMover == null)
+            {
+                Navigator.PlayerMover = new SlideMover();
+            }
+
+            if (Navigator.NavigationProvider == null)
+            {
+                Navigator.NavigationProvider = new GaiaNavigator();
+            }
+
             GamelogManager.MessageRecevied += Mgp.MessageReceived;
             Mgp.StartTime = DateTime.Now;
             Mgp.IsRunning = true;

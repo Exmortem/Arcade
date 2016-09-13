@@ -12,6 +12,9 @@ namespace Arcade.Tasks
     {
         public static async Task<bool> MoveToLocation(Vector3 location, float precision)
         {
+            if (Core.Player.Location.Distance(location) <= precision)
+                return true;
+
             while (Core.Player.Location.Distance(location) > precision)
             {
                 if (Core.Player.Location.Distance(location) > 50)

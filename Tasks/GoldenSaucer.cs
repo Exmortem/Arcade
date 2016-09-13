@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Arcade.Languages;
 using Buddy.Coroutines;
 using ff14bot;
 using ff14bot.Behavior;
@@ -22,8 +23,8 @@ namespace Arcade.Tasks
 
             if (!WorldManager.HasAetheryteId(62))
             {
-                Logging.Write(Colors.Red, $@"[Arcade] Stopping bot because you do not have the Gold Saucer aetheryte unlocked.");
-                TreeRoot.Stop(" You do not have the Gold Saucer aetheryte unlocked.");
+                Logging.Write(Colors.Red, Language.Instance.LogStoppingNoAetheryte);
+                TreeRoot.Stop(Language.Instance.LogStoppingNoAetheryte);
                 return false;
             }
 

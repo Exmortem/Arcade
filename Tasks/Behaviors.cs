@@ -95,6 +95,12 @@ namespace Arcade.Tasks
             var count = gamesList.Count;
 
             var randomIndex = new Random().Next(count);
+
+            if (count == 0)
+            {
+                return false;
+            }
+
             var newGame = count == 0 ? CurrentGame : gamesList[randomIndex];
 
             Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogPickingGame} {newGame}");

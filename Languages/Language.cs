@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Arcade.Languages
 {
@@ -19,6 +20,28 @@ namespace Arcade.Languages
         public Languages ClientLanguage;
 
         #region GUI
+        public string ArcadeLogin
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "Arcade: MGP Farmer";
+                    case Languages.German:
+                        return "";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "游乐场：请登录";
+                    default:
+                        return "Arcade: MGP Farmer";
+                }
+            }
+        }
+
         public string Arcade
         {
             get
@@ -144,7 +167,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "最小游戏时间";
+                        return "最小游戏时间（分钟）";
                     default:
                         return "Minimum Minutes Playing Game";
                 }
@@ -166,7 +189,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "最大游戏时间 ";
+                        return "最大游戏时间（分钟）";
                     default:
                         return "Maximum Minutes Playing Game";
                 }
@@ -344,7 +367,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "重击伽美什";
                     default:
                         return "Cuff-a-Cur";
                 }
@@ -366,7 +389,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "怪物投篮";
                     default:
                         return "Monster Toss";
                 }
@@ -388,7 +411,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "强袭水晶塔";
                     default:
                         return "Crystal Tower Stryker";
                 }
@@ -410,7 +433,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "莫古抓球机";
                     default:
                         return "Moogles Paw";
                 }
@@ -419,6 +442,31 @@ namespace Arcade.Languages
         #endregion
 
         #region Log
+
+        //停止工作，尚未解锁金碟游乐场。
+
+        public string LogStoppingNoAetheryte
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "[Arcade] Stopping bot because you do not have the Gold Saucer aetheryte unlocked.";
+                    case Languages.German:
+                        return "";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "停止工作，尚未解锁金碟游乐场。";
+                    default:
+                        return "Next game:";
+                }
+            }
+        }
+
         public string LogPickingGame
         {
             get
@@ -434,7 +482,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "下一个游戏：";
                     default:
                         return "Next game:";
                 }
@@ -456,7 +504,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "停止游戏，收益目标达成！";
                     default:
                         return "[Arcade] Stopped because we have reached MGP limit.";
                 }
@@ -478,7 +526,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "更换游戏时间为";
                     default:
                         return "[Arcade] Switching games again at";
                 }
@@ -500,7 +548,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "设置变更，不再玩“重击伽美什”。";
                     default:
                         return "[Arcade] Settings changed, we do not want to play Cuff-a-Cur anymore.";
                 }
@@ -522,7 +570,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "设置变更，不再玩“怪物投篮”。";
                     default:
                         return "[Arcade] Settings changed, we do not want to play Monster Toss anymore.";
                 }
@@ -544,7 +592,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "设置变更，不再玩“强袭水晶塔”。";
                     default:
                         return "[Arcade] Settings changed, we do not want to play Crystal Tower Stryker anymore.";
                 }
@@ -566,9 +614,123 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "";
                     case Languages.Chinese:
-                        return "游乐场：金碟币快手";
+                        return "设置变更，不再玩“莫古抓球机”。";
                     default:
                         return "[Arcade] Settings changed, we do not want to play Moogles Paw anymore.";
+                }
+            }
+        }
+        #endregion
+
+        #region Cactpot
+        public string CactpotNotTimeToDrawYet
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "[Arcade] It is not time to draw yet, or we don't have a ticket.";
+                    case Languages.German:
+                        return "";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "重击伽美什";
+                    default:
+                        return "[Arcade] It is not time to draw yet, or we don't have a ticket.";
+                }
+            }
+        }
+
+        public string CactpotHaveNotBoughtTicketYet
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "[Arcade] We have not bought a ticket yet.";
+                    case Languages.German:
+                        return "";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "重击伽美什";
+                    default:
+                        return "[Arcade] We have not bought a ticket yet.";
+                }
+            }
+        }
+
+        public string CactpotAlreadyHaveTicket
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "[Arcade] We already have a Jumbo Cactpot ticket.";
+                    case Languages.German:
+                        return "";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "重击伽美什";
+                    default:
+                        return "[Arcade] We already have a Jumbo Cactpot ticket.";
+                }
+            }
+        }
+
+        public string CactpotPayout
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "payout";
+                    case Languages.German:
+                        return "";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "查看购";
+                    default:
+                        return "payout";
+                }
+            }
+        }
+        #endregion
+
+        #region Regex
+        public Regex MgpRegex
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return new Regex("");
+                    case Languages.English:
+                        return new Regex(@"You\sobtain\s([0-9]*)\sMGP");
+                    case Languages.German:
+                        return new Regex("");
+                    case Languages.French:
+                        return new Regex("");
+                    case Languages.Chinese:
+                        return new Regex(@"了([0-9]*)金");
+                    default:
+                        return new Regex(@"You\sobtain\s([0-9]*)\sMGP");
                 }
             }
         }

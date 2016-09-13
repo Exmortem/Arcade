@@ -220,7 +220,7 @@ namespace Arcade.Models
         }
 
         [Setting]
-        [DefaultValue(300000)]
+        [DefaultValue(150000)]
         public int MgpStopPoint
         {
             get { return _mgpStopPoint; }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using Arcade.Models;
-using Arcade.ViewModels;
+using Arcade.Utilities;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using ff14bot;
@@ -27,7 +26,7 @@ namespace Arcade.Tasks
 
         public static async Task<bool> Play()
         {
-            await Movement.MoveToLocation(Location, 4);
+            await Movement.MoveToLocation(Location, 3);
 
             await OpenClosestMachine();
 
@@ -70,7 +69,10 @@ namespace Arcade.Tasks
             // Pair 2 is your payout, 3 = Pulverizing (5 MGP), 2 = Crushing (3 MGP), 1 = Glancing (2 MGP), 0 = Weak (0 MGP)
             // Pair 3 is the displayed score on the popup
 
-            RaptureAtkUnitManager.GetWindowByName("Hummer").SendAction(3, 3, 0xB, 3, payout, 0, 0);
+            var window = RaptureAtkUnitManager.GetWindowByName("Hummer");
+            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, payout, 0, 0);
+
+            //RaptureAtkUnitManager.GetWindowByName("Hummer").SendAction(3, 3, 0xB, 3, payout, 0, 0);
             await Coroutine.Wait(10000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "GoldSaucerReward"));
         }
     }

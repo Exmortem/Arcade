@@ -90,6 +90,7 @@
     <Compile Include="Tasks\MooglesPaw.cs" />
     <Compile Include="Tasks\Movement.cs" />
     <Compile Include="Utilities\Mgp.cs" />
+    <Compile Include="Utilities\WindowInteraction.cs" />
     <Compile Include="ViewModels\ArcadeViewModel.cs" />
     <Compile Include="Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>

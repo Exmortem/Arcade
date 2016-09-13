@@ -26,7 +26,7 @@ namespace Arcade.Tasks
 
         public static async Task<bool> Play()
         {
-            await Movement.MoveToLocation(Location, 4);
+            await Movement.MoveToLocation(Location, 3);
             await OpenClosestMachine();
 
             if (!IsOpen)
@@ -78,7 +78,12 @@ namespace Arcade.Tasks
             // Pair 3 is unknown
 
             var shot = (uint)(!miss ? 1 : 0);
-            RaptureAtkUnitManager.GetWindowByName("BasketBall").SendAction(3, 3, 0xB, 3, shot, 3, 0);
+
+            var window = RaptureAtkUnitManager.GetWindowByName("BasketBall");
+            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, shot, 3, 0);
+
+            //RaptureAtkUnitManager.GetWindowByName("BasketBall").SendAction(3, 3, 0xB, 3, shot, 3, 0);
+
             await Coroutine.Sleep(5000);
             Mgp.UpdateTimeSpan();
 

@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Arcade.Languages;
 using Arcade.Models;
+using Arcade.Utilities;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using ff14bot;
@@ -70,7 +72,7 @@ namespace Arcade.Tasks
                 // This probably means we havent bought a ticket, or it's not time to draw yet
                 await Coroutine.Wait(5000, () => !Talk.DialogOpen);
                 Settings.Instance.JumboCactpotBoughtTicket = true;
-                Logging.Write(Colors.DodgerBlue, $@"[Arcade] It is not time to draw yet, or we don't have a ticket.");
+                Logging.Write(Colors.DodgerBlue, Language.Instance.CactpotNotTimeToDrawYet);
                 return false;
             }
 
@@ -79,8 +81,11 @@ namespace Arcade.Tasks
             await Coroutine.Wait(5000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "LotteryWeeklyRewardList"));
             var window = RaptureAtkUnitManager.GetWindowByName("LotteryWeeklyRewardList");
             // Close the window
-            window.SendAction(1, 3, 1);
-            Logging.Write(Colors.DodgerBlue, $@"[Arcade] We have not bought a ticket yet.");
+
+            WindowInteraction.SendAction(window, 1, 3, 1);
+            //window.SendAction(1, 3, 1);
+
+            Logging.Write(Colors.DodgerBlue, Language.Instance.CactpotHaveNotBoughtTicketYet);
             Settings.Instance.JumboCactpotBoughtTicket = false;
             return true;
         }
@@ -92,7 +97,7 @@ namespace Arcade.Tasks
                 return false;
             }
 
-            await Movement.MoveToLocation(JumboCactpotBrokerLocation, 4);
+            await Movement.MoveToLocation(JumboCactpotBrokerLocation, 3);
 
             var broker = GameObjectManager.GetObjectsByNPCId(JumboCactpotBroker).OrderBy(r => r.Distance2D()).FirstOrDefault();
 
@@ -106,17 +111,21 @@ namespace Arcade.Tasks
 
             await Coroutine.Wait(5000, () => Talk.DialogOpen);
 
-            Talk.Next();
+            while (Talk.DialogOpen)
+            {
+                Talk.Next();
+                await Coroutine.Yield();
+            }
 
             await Coroutine.Wait(5000, () => SelectString.IsOpen);
 
             var firstLine = SelectString.Lines().FirstOrDefault();
 
-            if (firstLine != null && firstLine.Contains("payout"))
+            if (firstLine != null && firstLine.Contains(Language.Instance.CactpotPayout))
             {
                 SelectString.ClickSlot(4);
                 Settings.Instance.JumboCactpotBoughtTicket = true;
-                Logging.Write(Colors.DodgerBlue, $@"[Arcade] We already have a Jumbo Cactpot ticket.");
+                Logging.Write(Colors.DodgerBlue, Language.Instance.CactpotAlreadyHaveTicket);
                 Settings.Instance.JumboCactpotBuyTime = DateTime.Now;
                 return false;
             }
@@ -126,8 +135,12 @@ namespace Arcade.Tasks
             await Coroutine.Wait(5000, () => LotteryInputOpen);
             await Coroutine.Sleep(3000);
 
+            var lotteryNumber = new Random().Next(0000, 9999);
+
             var window = RaptureAtkUnitManager.GetWindowByName("LotteryWeeklyInput");
-            window.SendAction(1, 3, 3421);
+
+            WindowInteraction.SendAction(window, 1, 3, (uint)lotteryNumber);
+            //window.SendAction(1, 3, (uint)lotteryNumber);
 
             await Coroutine.Wait(5000, () => SelectYesno.IsOpen);
             SelectYesno.ClickYes();

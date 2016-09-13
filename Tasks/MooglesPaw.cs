@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Arcade.Models;
+using Arcade.Utilities;
 using Arcade.ViewModels;
 using Buddy.Coroutines;
 using Clio.Utilities;
@@ -24,7 +25,7 @@ namespace Arcade.Tasks
 
         public static async Task<bool> Play()
         {
-            await Movement.MoveToLocation(Location, 4);
+            await Movement.MoveToLocation(Location, 3);
 
             await OpenClosestMachine();
 
@@ -67,7 +68,10 @@ namespace Arcade.Tasks
             // Pair 2 determines payout, 2 = Small item (5 MGP), 1 = Large item (2 MGP), 0 = Try Again (0 MGP)
             // Pair 3 is unknown
 
-            RaptureAtkUnitManager.GetWindowByName("UfoCatcher").SendAction(3, 3, 0xB, payout, 2, 3, 0);
+            var window = RaptureAtkUnitManager.GetWindowByName("UfoCatcher");
+            WindowInteraction.SendAction(window, 3, 3, 0xB, payout, 2, 3, 0);
+
+            //RaptureAtkUnitManager.GetWindowByName("UfoCatcher").SendAction(3, 3, 0xB, payout, 2, 3, 0);
             await Coroutine.Wait(10000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "GoldSaucerReward"));
         }
     }
