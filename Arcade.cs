@@ -26,35 +26,40 @@ namespace Arcade
             SiuneSession.SetProduct(18, Settings.Instance.Key);
             ArcadeViewModel.Instance.RunningTime = "00:00:00";
 
-            //var patternFinder = new GreyMagic.PatternFinder(Core.Memory);
+            var patternFinder = new GreyMagic.PatternFinder(Core.Memory);
+
+            var intPtr = patternFinder.Find(Environment.Is64BitProcess ? 
+                "Search 48 8D 0D ? ? ? ? 83 CA FF 89 05 ? ? ? ? Add 3 TraceRelative" :
+                "Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
+
             //var intPtr = patternFinder.Find("Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
-            //var languageByte = Core.Memory.Read<byte>(intPtr);
+            // var intPtr = patternFinder.Find("Search 48 8D 0D ? ? ? ? 83 CA FF 89 05 ? ? ? ? Add 3 TraceRelative");
 
-            int languageByte;
+            var languageByte = Core.Memory.Read<byte>(intPtr);
 
-            var sprint = Actionmanager.CurrentActions.Values.FirstOrDefault(r => r.Id == 3);
+            //int languageByte;
 
-            if (sprint == null)
-            {
-                languageByte = 1;
-            }
-            else
-            {
-                switch (sprint.LocalizedName)
-                {
-                    case "Sprint":
-                        languageByte = 1;
-                        break;
-                    case "冲刺":
-                        languageByte = 4;
-                        break;
-                    default:
-                        languageByte = 1;
-                        break;
-                }
-            }
+            //var sprint = Actionmanager.CurrentActions.Values.FirstOrDefault(r => r.Id == 3);
 
-            //Language.Instance.ClientLanguage = Languages.Languages.Chinese;
+            //if (sprint == null)
+            //{
+            //    languageByte = 1;
+            //}
+            //else
+            //{
+            //    switch (sprint.LocalizedName)
+            //    {
+            //        case "Sprint":
+            //            languageByte = 1;
+            //            break;
+            //        case "冲刺":
+            //            languageByte = 4;
+            //            break;
+            //        default:
+            //            languageByte = 1;
+            //            break;
+            //    }
+            //}
 
             switch (languageByte)
             {

@@ -702,7 +702,7 @@ namespace Arcade.Languages
                     case Languages.German:
                         return "";
                     case Languages.French:
-                        return "";
+                        return "l'état du bonus";
                     case Languages.Chinese:
                         return "查看购";
                     default:

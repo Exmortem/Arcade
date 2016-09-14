@@ -51,6 +51,9 @@ namespace Arcade.Tasks
                 return true;
             }
 
+
+            return await MiniCactpot.Play();
+
             if (Settings.Instance.StopIfReachCertainMgp)
             {
                 if (ArcadeViewModel.Instance.MgpGained >= Settings.Instance.MgpStopPoint)

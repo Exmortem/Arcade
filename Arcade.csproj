@@ -86,6 +86,7 @@
     <Compile Include="Tasks\CuffACur.cs" />
     <Compile Include="Tasks\GoldenSaucer.cs" />
     <Compile Include="Tasks\JumboCactpot.cs" />
+    <Compile Include="Tasks\MiniCactpot.cs" />
     <Compile Include="Tasks\MonsterToss.cs" />
     <Compile Include="Tasks\MooglesPaw.cs" />
     <Compile Include="Tasks\Movement.cs" />
