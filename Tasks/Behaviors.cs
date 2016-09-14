@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Arcade.Languages;
@@ -51,9 +50,6 @@ namespace Arcade.Tasks
                 return true;
             }
 
-
-            return await MiniCactpot.Play();
-
             if (Settings.Instance.StopIfReachCertainMgp)
             {
                 if (ArcadeViewModel.Instance.MgpGained >= Settings.Instance.MgpStopPoint)
@@ -64,6 +60,8 @@ namespace Arcade.Tasks
                     return false;
                 }
             }
+
+            if (await MiniCactpot.Play()) return true;
 
             if (Settings.Instance.JumboCactpot)
             {
@@ -99,6 +97,14 @@ namespace Arcade.Tasks
 
             var randomIndex = new Random().Next(count);
 
+            if (count == 1)
+            {
+                if (Settings.Instance.CuffACurr && await CuffACur.Play()) return true;
+                if (Settings.Instance.CrystalTowerStryker && await CrystalTowerStryker.Play()) return true;
+                if (Settings.Instance.MonsterToss && await MonsterToss.Play()) return true;
+                if (Settings.Instance.MooglesPaw && await MooglesPaw.Play()) return true;
+            }
+
             if (count == 0)
             {
                 return false;
@@ -108,7 +114,7 @@ namespace Arcade.Tasks
 
             Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogPickingGame} {newGame}");
             TimeToSwitchGame = DateTime.Now.AddMinutes(new Random().Next(Settings.Instance.MinMinutes, Settings.Instance.MaxMinutes));
-            Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogSwitchingGamesAgainAt} {TimeToSwitchGame.ToShortTimeString()}.");
+            Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogSwitchingGamesAgainAt} {TimeToSwitchGame:HH:mm}.");
 
             if (newGame == Cuff)
             {
@@ -141,16 +147,16 @@ namespace Arcade.Tasks
             {
                 var list = new List<string>();
 
-                if (Settings.Instance.CuffACurr && CurrentGame != Cuff)
+                if (Settings.Instance.CuffACurr)
                     list.Add(Cuff);
 
-                if (Settings.Instance.MonsterToss && CurrentGame != Monster)
+                if (Settings.Instance.MonsterToss)
                     list.Add(Monster);
 
-                if (Settings.Instance.CrystalTowerStryker && CurrentGame != Crystal)
+                if (Settings.Instance.CrystalTowerStryker)
                     list.Add(Crystal);
 
-                if (Settings.Instance.MooglesPaw && CurrentGame != Moogles)
+                if (Settings.Instance.MooglesPaw)
                     list.Add(Moogles);
 
                 return list;

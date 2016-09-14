@@ -7,8 +7,8 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="#FF111111"
-        SizeToContent="Height"
-        Title="Arcade" Width="330">
+        SizeToContent="WidthAndHeight"
+        Title="Arcade">
     
     <Window.DataContext>
         <viewModels:ArcadeViewModel />
@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <StackPanel>
+    <StackPanel Margin="10,0">
         <Grid Background="#FF111111" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -74,14 +74,15 @@
                     <TextBlock Grid.Column="0" VerticalAlignment="Center" Grid.Row="0" Foreground="White" Text="{Binding Languages.MinimumMinutesPlayingGame}" />
                     <TextBlock Grid.Row="1" VerticalAlignment="Center" Grid.Column="0" Foreground="White" Text="{Binding Languages.MaximumMinutesPlayingGame}" />
 
-                    <userControls:Numeric Grid.Row="0" Grid.Column="1" Margin="2,3" TextBlockValue="" TextBoxWidth="30" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MinMinutes, Mode=TwoWay}" />
-                    <userControls:Numeric Grid.Row="1" Grid.Column="1" Margin="2,0" TextBlockValue="" TextBoxWidth="30" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MaxMinutes, Mode=TwoWay}" />
+                    <userControls:Numeric Grid.Row="0" Grid.Column="1" Margin="2,3" TextBlockValue="" TextBoxWidth="50" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MinMinutes, Mode=TwoWay}" />
+                    <userControls:Numeric Grid.Row="1" Grid.Column="1" Margin="2,0" TextBlockValue="" TextBoxWidth="50" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MaxMinutes, Mode=TwoWay}" />
                 </Grid>
             </StackPanel>
 
             <StackPanel Margin="5,5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
 
-                <CheckBox Margin="0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayJumboCactpot}" IsChecked="{Binding Settings.Instance.JumboCactpot, Mode=TwoWay}" />
+                <CheckBox Margin="0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayMiniCactpot}" IsChecked="{Binding Settings.Instance.MiniCactpot, Mode=TwoWay}" />
+                <CheckBox Margin="0,0,0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayJumboCactpot}" IsChecked="{Binding Settings.Instance.JumboCactpot, Mode=TwoWay}" />
 
                 <CheckBox Content="{Binding Languages.FastMode}" IsChecked="{Binding Settings.Instance.FastMode, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
               

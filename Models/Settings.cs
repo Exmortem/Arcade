@@ -43,6 +43,33 @@ namespace Arcade.Models
             }
         }
 
+        private bool _miniCactpot;
+        private bool _miniCactpotPlayedToday;
+
+        [Setting]
+        [DefaultValue(false)]
+        public bool MiniCactpot
+        {
+            get { return _miniCactpot; }
+            set
+            {
+                _miniCactpot = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [Setting]
+        [DefaultValue(false)]
+        public bool MiniCactpotPlayedToday
+        {
+            get { return _miniCactpotPlayedToday; }
+            set
+            {
+                _miniCactpotPlayedToday = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _jumboCactpot;
         private bool _jumboCactpotBoughtTicket;
         private DateTime _jumboCactpotBuyTime;

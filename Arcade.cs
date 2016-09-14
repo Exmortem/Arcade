@@ -32,34 +32,7 @@ namespace Arcade
                 "Search 48 8D 0D ? ? ? ? 83 CA FF 89 05 ? ? ? ? Add 3 TraceRelative" :
                 "Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
 
-            //var intPtr = patternFinder.Find("Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
-            // var intPtr = patternFinder.Find("Search 48 8D 0D ? ? ? ? 83 CA FF 89 05 ? ? ? ? Add 3 TraceRelative");
-
             var languageByte = Core.Memory.Read<byte>(intPtr);
-
-            //int languageByte;
-
-            //var sprint = Actionmanager.CurrentActions.Values.FirstOrDefault(r => r.Id == 3);
-
-            //if (sprint == null)
-            //{
-            //    languageByte = 1;
-            //}
-            //else
-            //{
-            //    switch (sprint.LocalizedName)
-            //    {
-            //        case "Sprint":
-            //            languageByte = 1;
-            //            break;
-            //        case "冲刺":
-            //            languageByte = 4;
-            //            break;
-            //        default:
-            //            languageByte = 1;
-            //            break;
-            //    }
-            //}
 
             switch (languageByte)
             {
@@ -84,6 +57,8 @@ namespace Arcade
                     Language.Instance.ClientLanguage = Languages.Languages.English;
                     break;
             }
+
+            Settings.Instance.MiniCactpotPlayedToday = false;
         }
 
         private static void Log(string text)
