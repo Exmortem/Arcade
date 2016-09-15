@@ -1,9 +1,10 @@
 ﻿using System;
+using ff14bot;
 using ff14bot.Managers;
 
 namespace Arcade.Utilities
 {
-    public class WindowInteraction
+    public static class WindowInteraction
     {
         public static void SendAction(AtkAddonControl control, int count, params uint[] pairs)
         {

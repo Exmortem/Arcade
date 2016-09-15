@@ -56,7 +56,13 @@ namespace Arcade.Tasks
             closestMachine?.Interact();
             await Coroutine.Wait(5000, () => SelectString.IsOpen && IsOpen);
             SelectString.ClickSlot(0);
-            await Coroutine.Wait(2000, () => Core.Memory.Read<byte>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("PunchingMachine").Pointer + 0xD0)) == 4);
+
+            if (!Environment.Is64BitProcess)
+                await Coroutine.Wait(2000, () => Core.Memory.Read<byte>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("PunchingMachine").Pointer + 0xD0)) == 4);
+            else
+            {
+                await Coroutine.Wait(2000, () => Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("PunchingMachine").Pointer + 0x70) + 0x48) + 0x168) == 262420);
+            }
 
             if (!Settings.Instance.FastMode)
             {
