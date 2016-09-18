@@ -70,19 +70,22 @@ namespace Arcade.Tasks
             }
         }
 
-        private static async Task Throw(bool miss = false)
+        private static async Task Throw()
         {
             // Value Pairs: {3, 0xB}, {3, 1}, {3, 0x71B}
             // Pair 1 is unknown
             // Pair 2 is shot status, 1 = Nice Shot, 0 = Miss
             // Pair 3 is unknown
 
-            var shot = (uint)(!miss ? 1 : 0);
+            var shot = 1;
+
+            if (Settings.Instance.RandomizeScores)
+            {
+                shot = new Random().Next(1,101) > 30 ? 1 : 0;
+            }
 
             var window = RaptureAtkUnitManager.GetWindowByName("BasketBall");
-            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, shot, 3, 0);
-
-            //RaptureAtkUnitManager.GetWindowByName("BasketBall").SendAction(3, 3, 0xB, 3, shot, 3, 0);
+            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, (uint)shot, 3, 0);
 
             await Coroutine.Sleep(5000);
             Mgp.UpdateTimeSpan();

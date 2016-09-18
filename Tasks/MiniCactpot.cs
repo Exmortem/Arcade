@@ -78,7 +78,7 @@ namespace Arcade.Tasks
                 await Coroutine.Yield();
             }
 
-            if (!await Coroutine.Wait(5000, () => SelectYesno.IsOpen))
+            if (!await Coroutine.Wait(2500, () => SelectYesno.IsOpen))
             {
                 Settings.Instance.MiniCactpotPlayedToday = true;
                 return false;
@@ -222,8 +222,8 @@ namespace Arcade.Tasks
             }
 
             // Still didn't find a row you're happy with? Go fuck yourself
-            var randomIndex = new Random().Next(0, 8);
-            WindowInteraction.SendAction(window, 2, 3, 2, 3, (uint)randomIndex);
+            var index = CactpotRowValues.OrderBy(r => r.Value).First().Key;
+            WindowInteraction.SendAction(window, 2, 3, 2, 3, (uint)index);
             await Coroutine.Sleep(3000);
             return true;
         }

@@ -21,7 +21,7 @@
 
     <StackPanel Background="#FF111111" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
   
-        <TextBlock HorizontalAlignment="Center" Margin="5" Foreground="MediumSeaGreen" FontSize="20" Text="Arcade: Login">
+        <TextBlock HorizontalAlignment="Center" Margin="5" Foreground="MediumSeaGreen" FontSize="20" Text="{Binding Languages.ArcadeLogin}">
             <TextBlock.Effect>
                 <DropShadowEffect ShadowDepth="0" Color="Black" />
             </TextBlock.Effect>

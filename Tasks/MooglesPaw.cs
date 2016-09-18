@@ -32,7 +32,7 @@ namespace Arcade.Tasks
             if (!IsOpen)
                 return false;
 
-            await Catch(2);
+            await Catch();
             return true;
         }
 
@@ -61,15 +61,29 @@ namespace Arcade.Tasks
             }
         }
 
-        private static async Task Catch(uint payout)
+        private static async Task Catch()
         {
             // Value Pairs: {3, 0xB}, {3, 1}, {3, 0x71B}
             // Pair 1 is unknown
             // Pair 2 determines payout, 2 = Small item (5 MGP), 1 = Large item (2 MGP), 0 = Try Again (0 MGP)
             // Pair 3 is unknown
 
+            var rnd = new Random();
+            int payout;
+
+            if (Settings.Instance.RandomizeScores)
+            {
+                var percentage = rnd.Next(1, 101);
+
+                payout = percentage <= 40 ? 1 : 2;
+            }
+            else
+            {
+                payout = 2;
+            }
+
             var window = RaptureAtkUnitManager.GetWindowByName("UfoCatcher");
-            WindowInteraction.SendAction(window, 3, 3, 0xB, payout, 2, 3, 0);
+            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, (uint)payout, 3, 0);
 
             //RaptureAtkUnitManager.GetWindowByName("UfoCatcher").SendAction(3, 3, 0xB, payout, 2, 3, 0);
             await Coroutine.Wait(10000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "GoldSaucerReward"));

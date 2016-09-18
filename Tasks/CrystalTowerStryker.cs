@@ -33,7 +33,7 @@ namespace Arcade.Tasks
             if (!IsOpen)
                 return false;
 
-            await Swing(3);
+            await Swing();
             return true;
         }
 
@@ -62,15 +62,36 @@ namespace Arcade.Tasks
             }
         }
 
-        private static async Task Swing(uint payout)
+        private static async Task Swing()
         {
             // Value Pairs: {3, 0xB}, {3, 3}, {3, 0x71B}
             // Pair 1 is unknown
             // Pair 2 is your payout, 3 = Pulverizing (5 MGP), 2 = Crushing (3 MGP), 1 = Glancing (2 MGP), 0 = Weak (0 MGP)
             // Pair 3 is the displayed score on the popup
 
+            var rnd = new Random();
+            int payout;
+
+            if (Settings.Instance.RandomizeScores)
+            {
+                var percentage = rnd.Next(1, 101);
+
+                if (percentage <= 40)
+                {
+                    payout = percentage <= 20 ? 1 : 2;
+                }
+                else
+                {
+                    payout = 3;
+                }
+            }
+            else
+            {
+                payout = 3;
+            }
+
             var window = RaptureAtkUnitManager.GetWindowByName("Hummer");
-            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, payout, 0, 0);
+            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, (uint)payout, 0, 0);
 
             //RaptureAtkUnitManager.GetWindowByName("Hummer").SendAction(3, 3, 0xB, 3, payout, 0, 0);
             await Coroutine.Wait(10000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "GoldSaucerReward"));

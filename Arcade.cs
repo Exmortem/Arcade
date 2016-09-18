@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using Arcade.Languages;
 using Arcade.Models;
+using Arcade.Overlay;
 using Arcade.Tasks;
 using Arcade.Utilities;
 using Arcade.ViewModels;
@@ -78,6 +79,11 @@ namespace Arcade
                 Navigator.NavigationProvider = new GaiaNavigator();
             }
 
+            if (Settings.Instance.UseOverlay)
+            {
+                ArcadeOverlay.Start();
+            }
+
             GamelogManager.MessageRecevied += Mgp.MessageReceived;
             Mgp.StartTime = DateTime.Now;
             Mgp.IsRunning = true;
@@ -96,6 +102,8 @@ namespace Arcade
         {
             Mgp.IsRunning = false;
             GamelogManager.MessageRecevied -= Mgp.MessageReceived;
+            ArcadeOverlay.Stop();
+            Settings.Instance.Save();
         }
 
         private Composite _root;

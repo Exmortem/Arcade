@@ -64,6 +64,28 @@ namespace Arcade.Languages
             }
         }
 
+        public string UseOverlay
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "Use Overlay";
+                    case Languages.English:
+                        return "Use Overlay";
+                    case Languages.German:
+                        return "Zeige Overlay";
+                    case Languages.French:
+                        return "Use Overlay";
+                    case Languages.Chinese:
+                        return "Use Overlay";
+                    default:
+                        return "Use Overlay";
+                }
+            }
+        }
+
         public string PlayCuffaCurr
         {
             get
@@ -192,6 +214,28 @@ namespace Arcade.Languages
                         return "最大游戏时间（分钟）";
                     default:
                         return "Maximum Minutes Playing Game";
+                }
+            }
+        }
+
+        public string RandomizeScores
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "Randomize Scores";
+                    case Languages.English:
+                        return "Randomize Scores";
+                    case Languages.German:
+                        return "Erziele zufällige Punktzahl";
+                    case Languages.French:
+                        return "Randomize Scores";
+                    case Languages.Chinese:
+                        return "随机模式";
+                    default:
+                        return "Randomize Scores";
                 }
             }
         }

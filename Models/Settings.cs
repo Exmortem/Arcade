@@ -2,11 +2,10 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.Runtime.CompilerServices;
-using System.Windows.Media;
-using Arcade.Languages;
+using Arcade.Overlay;
 using Arcade.Tasks;
 using Arcade.Utilities;
-using Arcade.ViewModels;
+using ff14bot;
 using ff14bot.Helpers;
 
 namespace Arcade.Models
@@ -39,6 +38,60 @@ namespace Arcade.Models
             set
             {
                 _email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _useOverlay;
+
+        [Setting]
+        [DefaultValue(false)]
+        public bool UseOverlay
+        {
+            get { return _useOverlay; }
+            set
+            {
+                _useOverlay = value;
+
+                if (value == false)
+                {
+                    //ArcadeOverlay.Stop();
+                }
+                else
+                {
+                    //if (TreeRoot.IsRunning)
+                    //{
+                    //    ArcadeOverlay.Start();
+                    //}
+                }
+                
+                OnPropertyChanged();
+            }
+        }
+
+        private double _overlayPosX;
+        private double _overlayPosY;
+
+        [Setting]
+        [DefaultValue(60)]
+        public double OverlayPosX
+        {
+            get { return _overlayPosX; }
+            set
+            {
+                _overlayPosX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [Setting]
+        [DefaultValue(60)]
+        public double OverlayPosY
+        {
+            get { return _overlayPosY; }
+            set
+            {
+                _overlayPosY = value;
                 OnPropertyChanged();
             }
         }
@@ -147,6 +200,20 @@ namespace Arcade.Models
             set
             {
                 _fastMode = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _randomizeScores;
+
+        [Setting]
+        [DefaultValue(true)]
+        public bool RandomizeScores
+        {
+            get { return _randomizeScores; }
+            set
+            {
+                _randomizeScores = value;
                 OnPropertyChanged();
             }
         }

@@ -35,8 +35,7 @@ namespace Arcade.Tasks
             if (!IsOpen)
                 return false;
 
-            var randomScore = new Random().Next(1500, 2000);
-            await Punch(3, (uint)randomScore);
+            await Punch();
             return true;
         }
 
@@ -71,15 +70,48 @@ namespace Arcade.Tasks
             }
         }
 
-        private static async Task Punch(uint payout, uint score)
+        private static async Task Punch()
         {
             // Value Pairs: {3, 0xB}, {3, 3}, {3, 0x71B}
             // Pair 1 is unknown
             // Pair 2 is your payout, 3 = Brutal (5 MGP), 2 = Punishing (3 MGP), 1 = Brusing (2 MGP), 0 = Weak (0 MGP)
             // Pair 3 is the displayed score on the popup
 
+            var rnd = new Random();
+            int score;
+            int payout;
+
+            if (Settings.Instance.RandomizeScores)
+            {
+                var percentage = rnd.Next(1, 101);
+
+                if (percentage <= 40)
+                {
+                    if (percentage <= 20)
+                    {
+                        score = rnd.Next(500, 999);
+                        payout = 1;
+                    }
+                    else
+                    {
+                        score = rnd.Next(1000, 1499);
+                        payout = 2;
+                    }
+                }
+                else
+                {
+                    score = rnd.Next(1500, 2000);
+                    payout = 3;
+                }                
+            }
+            else
+            {
+                score = rnd.Next(1500, 2000);
+                payout = 3;
+            }
+
             var window = RaptureAtkUnitManager.GetWindowByName("PunchingMachine");
-            WindowInteraction.SendAction(window, 3, 3, 0xB, payout, 3, 3, score);
+            WindowInteraction.SendAction(window, 3, 3, 0xB, 3, (uint)payout, 3, (uint)score);
 
             //RaptureAtkUnitManager.GetWindowByName("PunchingMachine").SendAction(3, 3, 0xB, payout, 3, 3, score);
             await Coroutine.Wait(10000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "GoldSaucerReward"));

@@ -48,7 +48,7 @@ namespace Arcade.Utilities
 
             Application.Current.Dispatcher.Invoke(delegate
             {
-                ArcadeViewModel.Instance.GamesPlayed++;ArcadeViewModel.Instance.MgpGained = ArcadeViewModel.Instance.MgpGained + int.Parse(match.Groups[1].Value);
+                ArcadeViewModel.Instance.GamesPlayed++;ArcadeViewModel.Instance.MgpGained = ArcadeViewModel.Instance.MgpGained + int.Parse(match.Groups[1].Value.Replace(",",""));
                 ArcadeViewModel.Instance.MgpPerHour = (int)(ArcadeViewModel.Instance.MgpGained/(DateTime.Now - StartTime).TotalHours);
             });
         }
