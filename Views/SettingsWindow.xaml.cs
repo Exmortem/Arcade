@@ -11,7 +11,7 @@ namespace Arcade.Views
         {
             InitializeComponent();
 
-            if (!SiuneSession.IsAuthenticated(18))
+            if (!SiuneSession.IsAuthenticated(24))
             {
                 Arcade.Login.ShowDialog();
             }

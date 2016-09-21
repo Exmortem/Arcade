@@ -29,11 +29,11 @@ namespace Arcade.Views
             
             Settings.Instance.Key = TxtKey.Text.Trim();
             Settings.Instance.Email = TxtEmail.Text.Trim();
-            SiuneSession.SetProduct(18, Settings.Instance.Key);
+            SiuneSession.SetProduct(24, Settings.Instance.Key);
             Settings.Instance.Save();
         }
 
-        private async void TestKey(object sender, RoutedEventArgs e)
+        private void TestKey(object sender, RoutedEventArgs e)
         {
             TxtAuth.Visibility = Visibility.Visible;
 
@@ -45,10 +45,10 @@ namespace Arcade.Views
 
             Settings.Instance.Key = TxtKey.Text.Trim();
             Settings.Instance.Email = TxtEmail.Text.Trim();
-            SiuneSession.SetProduct(18, Settings.Instance.Key);
+            SiuneSession.SetProduct(24, Settings.Instance.Key);
             Settings.Instance.Save();
 
-            if (SiuneSession.IsAuthenticated(18))
+            if (SiuneSession.IsAuthenticated(24))
             {
                 Close();
             }

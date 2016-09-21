@@ -90,10 +90,10 @@ namespace Arcade.Tasks
                 await Coroutine.Yield();
             }
 
-            if (!await Coroutine.Wait(5000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "LotteryDaily")))
+            if (!await Coroutine.Wait(2500, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "LotteryDaily")))
                 return false;
 
-            await Coroutine.Sleep(3000);
+            await Coroutine.Sleep(2500);
             return true;
         }
 

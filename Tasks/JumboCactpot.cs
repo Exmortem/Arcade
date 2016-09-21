@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -26,10 +27,32 @@ namespace Arcade.Tasks
         {
             get
             {
-                if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday)
+                if (!Settings.Instance.JumboCactpotBoughtTicket)
                     return false;
 
-                return DateTime.Now.Hour >= 20;
+                //Logging.Write(Settings.Instance.JumboCactpotBuyTime.Year);
+
+                if (Settings.Instance.JumboCactpotBuyTime.Year == 1)
+                {
+                    Settings.Instance.JumboCactpotBoughtTicket = false;
+                    return true;
+                }
+
+                var daysUntilSaturday = ((int)DayOfWeek.Saturday - (int)Settings.Instance.JumboCactpotBuyTime.DayOfWeek + 7) % 7 + 1;
+
+                if (daysUntilSaturday > 0)
+                {
+                    return false;
+                }
+
+                return DateTime.Now.DayOfWeek != DayOfWeek.Saturday || DateTime.Now.Hour >= 20;
+                
+                //Logging.Write(daysUntilSaturday);
+
+                //if (DateTime.Now.AddDays(7) > Settings.Instance.JumboCactpotBuyTime)
+                //{
+                //    return false;
+                //}
             }
         }
 
@@ -43,6 +66,9 @@ namespace Arcade.Tasks
 
         public static async Task<bool> CollectReward()
         {
+            if (!Settings.Instance.JumboCactpot)
+                return false;
+
             if (!TimeToCollect)
                 return false;
 
@@ -71,9 +97,9 @@ namespace Arcade.Tasks
 
                 // This probably means we havent bought a ticket, or it's not time to draw yet
                 await Coroutine.Wait(5000, () => !Talk.DialogOpen);
-                Settings.Instance.JumboCactpotBoughtTicket = true;
+                //Settings.Instance.JumboCactpotBoughtTicket = true;
                 Logging.Write(Colors.DodgerBlue, Language.Instance.CactpotNotTimeToDrawYet);
-                return false;
+                return await BuyTicket();
             }
 
             // When you interact for the reward, the first window that pops up is the reward list. You automatically get the MGP reward in the log.
@@ -82,10 +108,16 @@ namespace Arcade.Tasks
             var window = RaptureAtkUnitManager.GetWindowByName("LotteryWeeklyRewardList");
             // Close the window
 
-            WindowInteraction.SendAction(window, 1, 3, 1);
-            //window.SendAction(1, 3, 1);
+            while (RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "LotteryWeeklyRewardList"))
+            {
+                WindowInteraction.SendAction(window, 1, 3, 0xFFFFFFFF);
+                await Coroutine.Yield();
+            }
 
-            Logging.Write(Colors.DodgerBlue, Language.Instance.CactpotHaveNotBoughtTicketYet);
+            //WindowInteraction.SendAction(window, 1, 3, 1);
+            //window.SendAction(1, 3, 1);
+            //Logging.Write(Colors.DodgerBlue, Language.Instance.CactpotHaveNotBoughtTicketYet);
+
             Settings.Instance.JumboCactpotBoughtTicket = false;
             return true;
         }
@@ -117,7 +149,11 @@ namespace Arcade.Tasks
                 await Coroutine.Yield();
             }
 
-            await Coroutine.Wait(5000, () => SelectString.IsOpen);
+            if (!await Coroutine.Wait(2500, () => SelectString.IsOpen))
+            {
+                Settings.Instance.JumboCactpotBoughtTicket = true;
+                return true;
+            }
 
             var firstLine = SelectString.Lines().FirstOrDefault();
 
@@ -156,7 +192,7 @@ namespace Arcade.Tasks
             }
 
             Settings.Instance.JumboCactpotBuyTime = DateTime.Now;
-            
+            Settings.Instance.JumboCactpotBoughtTicket = true;
             return true;
         }
     }

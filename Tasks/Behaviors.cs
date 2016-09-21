@@ -34,7 +34,7 @@ namespace Arcade.Tasks
 
         public static async Task<bool> Main()
         {
-            if (!SiuneSession.IsAuthenticated(18))
+            if (!SiuneSession.IsAuthenticated(24))
                 return false;
 
             if (!GoldenSaucer.InZone)

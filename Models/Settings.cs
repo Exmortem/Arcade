@@ -162,8 +162,7 @@ namespace Arcade.Models
             }
         }
 
-
-        private int _minMinutes;
+       private int _minMinutes;
         private int _maxMinutes;
 
         [Setting]

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Arcade.Languages;
@@ -23,8 +22,8 @@ namespace Arcade
     {
         public Arcade()
         {
-            SiuneSession.RegisterProduct(18, "Arcade", Log);
-            SiuneSession.SetProduct(18, Settings.Instance.Key);
+            SiuneSession.RegisterProduct(24, "Arcade", Log);
+            SiuneSession.SetProduct(24, Settings.Instance.Key);
             ArcadeViewModel.Instance.RunningTime = "00:00:00";
 
             var patternFinder = new GreyMagic.PatternFinder(Core.Memory);
@@ -69,15 +68,8 @@ namespace Arcade
 
         public void Start()
         {
-            if (Navigator.PlayerMover == null)
-            {
-                Navigator.PlayerMover = new SlideMover();
-            }
-
-            if (Navigator.NavigationProvider == null)
-            {
-                Navigator.NavigationProvider = new GaiaNavigator();
-            }
+            Navigator.NavigationProvider = new GaiaNavigator { PathPrecision = 0.8f };
+            Navigator.PlayerMover = new SlideMover();
 
             if (Settings.Instance.UseOverlay)
             {
@@ -104,6 +96,14 @@ namespace Arcade
             GamelogManager.MessageRecevied -= Mgp.MessageReceived;
             ArcadeOverlay.Stop();
             Settings.Instance.Save();
+
+            if (Navigator.NavigationProvider == null)
+            {
+                return;
+            }
+
+            ((GaiaNavigator)Navigator.NavigationProvider).Dispose();
+            Navigator.NavigationProvider = null;
         }
 
         private Composite _root;
