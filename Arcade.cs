@@ -37,7 +37,7 @@ namespace Arcade
             switch (languageByte)
             {
                 case 0:
-                    Language.Instance.ClientLanguage = Languages.Languages.Japanese;
+                    Language.Instance.ClientLanguage = Languages.Languages.English;
                     break;
                 case 1:
                     Language.Instance.ClientLanguage = Languages.Languages.English;
@@ -45,9 +45,10 @@ namespace Arcade
                     break;
                 case 2:
                     Language.Instance.ClientLanguage = Languages.Languages.German;
+                    Logging.Write(Colors.DodgerBlue, $@"[Arcade] Language: German");
                     break;
                 case 3:
-                    Language.Instance.ClientLanguage = Languages.Languages.French;
+                    Language.Instance.ClientLanguage = Languages.Languages.English;
                     break;
                 case 4:
                     Language.Instance.ClientLanguage = Languages.Languages.Chinese;
@@ -86,7 +87,7 @@ namespace Arcade
             {
                 ArcadeViewModel.Instance.MgpGained = 0;
                 ArcadeViewModel.Instance.GamesPlayed = 0;
-                ArcadeViewModel.Instance.MgpPerHour = 0;
+                ArcadeViewModel.Instance.MgpPerHour = 0;               
             });
         }
 
