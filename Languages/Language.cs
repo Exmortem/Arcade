@@ -64,6 +64,94 @@ namespace Arcade.Languages
             }
         }
 
+        public string LoginEmail
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "Email:";
+                    case Languages.German:
+                        return "Email:";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "邮箱";
+                    default:
+                        return "Email:";
+                }
+            }
+        }
+
+        public string LoginKey
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "Product Key:";
+                    case Languages.German:
+                        return "Product Key:";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "密钥";
+                    default:
+                        return "Product Key:";
+                }
+            }
+        }
+
+        public string LoginLogin
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "Login";
+                    case Languages.German:
+                        return "Login";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "登陆";
+                    default:
+                        return "Login";
+                }
+            }
+        }
+
+        public string LoginMoreInformationNeeded
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "";
+                    case Languages.English:
+                        return "More Information Needed";
+                    case Languages.German:
+                        return "More Information Needed";
+                    case Languages.French:
+                        return "";
+                    case Languages.Chinese:
+                        return "你需要填写更多信息";
+                    default:
+                        return "More Information Needed";
+                }
+            }
+        }
+
         public string UseOverlay
         {
             get
@@ -79,7 +167,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "Use Overlay";
                     case Languages.Chinese:
-                        return "Use Overlay";
+                        return "显示统计面板";
                     default:
                         return "Use Overlay";
                 }
@@ -233,7 +321,7 @@ namespace Arcade.Languages
                     case Languages.French:
                         return "Randomize Scores";
                     case Languages.Chinese:
-                        return "随机模式";
+                        return "随机分数";
                     default:
                         return "Randomize Scores";
                 }

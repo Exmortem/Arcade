@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Media;
 using Arcade.Languages;
 using Arcade.Models;
 using Arcade.Utilities;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using ff14bot;
-using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.RemoteWindows;
 
@@ -127,14 +125,14 @@ namespace Arcade.Tasks
 
             // Pick a slot from the best row
             var bestRow = GetBestRowValue();
-            Logging.Write(Colors.Red, $@"[Arcade] Best row value: {bestRow}");
+            //Logging.Write(Colors.Red, $@"[Arcade] Best row value: {bestRow}");
 
             foreach (var scratchOff in CactpotRows[bestRow])
             {
                 if (GetValueOfIndex(scratchOff) > 0)
                     continue;
 
-                Logging.Write(Colors.Red, $@"[Arcade] Picking Slot: {scratchOff}");
+                //Logging.Write(Colors.Red, $@"[Arcade] Picking Slot: {scratchOff}");
                 return await TurnASlot((uint) scratchOff);
             }
 
@@ -290,13 +288,13 @@ namespace Arcade.Tasks
                 valuesDict.Add(row.Key, value);
             }
 
-            foreach (var row in valuesDict)
-            {
-                Logging.Write(Colors.BlueViolet, $@"[Arcade] {row.Key} : {row.Value}");
-            }
+            //foreach (var row in valuesDict)
+            //{
+            //    Logging.Write(Colors.BlueViolet, $@"[Arcade] {row.Key} : {row.Value}");
+            //}
 
             var bestRow = valuesDict.OrderByDescending(r => r.Value).First();
-            Logging.Write(Colors.BlueViolet, $@"[Arcade] Best row value: {bestRow.Value}");
+            //Logging.Write(Colors.BlueViolet, $@"[Arcade] Best row value: {bestRow.Value}");
             return bestRow.Key;
         }
 

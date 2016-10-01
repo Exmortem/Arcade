@@ -26,9 +26,9 @@ namespace Arcade.Views
         {
             if (string.IsNullOrEmpty(TxtKey.Text) || string.IsNullOrEmpty(TxtEmail.Text))
                 return;
-            
-            Settings.Instance.Key = TxtKey.Text.Trim();
-            Settings.Instance.Email = TxtEmail.Text.Trim();
+
+            Settings.Instance.Key = TxtKey.Text;
+            Settings.Instance.Email = TxtEmail.Text;
             SiuneSession.SetProduct(24, Settings.Instance.Key);
             Settings.Instance.Save();
         }
@@ -39,12 +39,12 @@ namespace Arcade.Views
 
             if (string.IsNullOrEmpty(TxtKey.Text) || string.IsNullOrEmpty(TxtEmail.Text))
             {
-                TxtAuth.Text = "More Information Needed";
+                TxtAuth.Text = Languages.Language.Instance.LoginMoreInformationNeeded;
                 return;
             }
 
-            Settings.Instance.Key = TxtKey.Text.Trim();
-            Settings.Instance.Email = TxtEmail.Text.Trim();
+            Settings.Instance.Key = TxtKey.Text;
+            Settings.Instance.Email = TxtEmail.Text;
             SiuneSession.SetProduct(24, Settings.Instance.Key);
             Settings.Instance.Save();
 

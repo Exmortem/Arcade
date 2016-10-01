@@ -17,27 +17,29 @@ namespace Arcade.Utilities
 
         public static void MessageReceived(object sender, ChatEventArgs chatEventArgs)
         {
+            var contents = chatEventArgs.ChatLogEntry.Contents.Replace(",", "");
+
             Match match;
 
             switch (Language.Instance.ClientLanguage)
             {
                 case Languages.Languages.Japanese:
-                    match = MgpRegex.Match(chatEventArgs.ChatLogEntry.Contents);
+                    match = MgpRegex.Match(contents);
                     break;
                 case Languages.Languages.English:
-                    match = MgpRegex.Match(chatEventArgs.ChatLogEntry.Contents);
+                    match = MgpRegex.Match(contents);
                     break;
                 case Languages.Languages.German:
-                    match = GermanMgpRegex.Match(chatEventArgs.ChatLogEntry.Contents);
+                    match = GermanMgpRegex.Match(contents);
                     break;
                 case Languages.Languages.French:
-                    match = MgpRegex.Match(chatEventArgs.ChatLogEntry.Contents);
+                    match = MgpRegex.Match(contents);
                     break;
                 case Languages.Languages.Chinese:
-                    match = CnMgpRegex.Match(chatEventArgs.ChatLogEntry.Contents);
+                    match = CnMgpRegex.Match(contents);
                     break;
                 default:
-                    match = MgpRegex.Match(chatEventArgs.ChatLogEntry.Contents);
+                    match = MgpRegex.Match(contents);
                     break;
             }
 
@@ -48,7 +50,8 @@ namespace Arcade.Utilities
 
             Application.Current.Dispatcher.Invoke(delegate
             {
-                ArcadeViewModel.Instance.GamesPlayed++;ArcadeViewModel.Instance.MgpGained = ArcadeViewModel.Instance.MgpGained + int.Parse(match.Groups[1].Value.Replace(",",""));
+                ArcadeViewModel.Instance.GamesPlayed++;
+                ArcadeViewModel.Instance.MgpGained = ArcadeViewModel.Instance.MgpGained + int.Parse(match.Groups[1].Value);
                 ArcadeViewModel.Instance.MgpPerHour = (int)(ArcadeViewModel.Instance.MgpGained/(DateTime.Now - StartTime).TotalHours);
             });
         }

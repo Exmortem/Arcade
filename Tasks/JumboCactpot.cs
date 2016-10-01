@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -30,29 +29,35 @@ namespace Arcade.Tasks
                 if (!Settings.Instance.JumboCactpotBoughtTicket)
                     return false;
 
-                //Logging.Write(Settings.Instance.JumboCactpotBuyTime.Year);
-
+                // If the datetime year is 1 it means the setting is defaulted and the ticket hasn't been bought yet or the settings file deleted
                 if (Settings.Instance.JumboCactpotBuyTime.Year == 1)
                 {
                     Settings.Instance.JumboCactpotBoughtTicket = false;
                     return true;
                 }
 
-                var daysUntilSaturday = ((int)DayOfWeek.Saturday - (int)Settings.Instance.JumboCactpotBuyTime.DayOfWeek + 7) % 7 + 1;
+                var dayBoughtTicket = Settings.Instance.JumboCactpotBuyTime;
+                var daysTillCashIn = ((int) DayOfWeek.Saturday - (int) dayBoughtTicket.DayOfWeek + 7) % 7;
 
-                if (daysUntilSaturday > 0)
+                if (dayBoughtTicket.AddDays(daysTillCashIn) < DateTime.Now)
+                {
+                    //Logging.Write(Colors.Red, $@"{dayBoughtTicket.AddDays(dayWeCanCashIn)}");
+
+                    var now = DateTime.Now;
+
+                    if (now.DayOfWeek == DayOfWeek.Saturday)
+                    {
+                        if (now.Hour < 20)
+                            return false;
+                    }
+
+                    return true;
+                }
+                else
                 {
                     return false;
                 }
 
-                return DateTime.Now.DayOfWeek != DayOfWeek.Saturday || DateTime.Now.Hour >= 20;
-                
-                //Logging.Write(daysUntilSaturday);
-
-                //if (DateTime.Now.AddDays(7) > Settings.Instance.JumboCactpotBuyTime)
-                //{
-                //    return false;
-                //}
             }
         }
 
@@ -106,17 +111,12 @@ namespace Arcade.Tasks
             // Open the window and close the list.
             await Coroutine.Wait(5000, () => RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "LotteryWeeklyRewardList"));
             var window = RaptureAtkUnitManager.GetWindowByName("LotteryWeeklyRewardList");
-            // Close the window
 
             while (RaptureAtkUnitManager.GetRawControls.Any(r => r.Name == "LotteryWeeklyRewardList"))
             {
-                WindowInteraction.SendAction(window, 1, 3, 0xFFFFFFFF);
+                WindowInteraction.SendAction(window, 1, 3, 0);
                 await Coroutine.Yield();
             }
-
-            //WindowInteraction.SendAction(window, 1, 3, 1);
-            //window.SendAction(1, 3, 1);
-            //Logging.Write(Colors.DodgerBlue, Language.Instance.CactpotHaveNotBoughtTicketYet);
 
             Settings.Instance.JumboCactpotBoughtTicket = false;
             return true;
@@ -152,6 +152,7 @@ namespace Arcade.Tasks
             if (!await Coroutine.Wait(2500, () => SelectString.IsOpen))
             {
                 Settings.Instance.JumboCactpotBoughtTicket = true;
+                Settings.Instance.JumboCactpotBuyTime = DateTime.Now;
                 return true;
             }
 
