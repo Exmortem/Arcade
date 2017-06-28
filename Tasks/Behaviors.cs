@@ -10,7 +10,7 @@ using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.RemoteWindows;
-using Siune.Client;
+using AuthCoreClient;
 
 namespace Arcade.Tasks
 {
@@ -25,6 +25,8 @@ namespace Arcade.Tasks
         }
 
         public static DateTime TimeToSwitchGame;
+        public static bool SwitchedGame;
+        public static bool PlayingOnlyOneGame;
         public static string CurrentGame = "None";
 
         public static readonly string Cuff;
@@ -34,7 +36,7 @@ namespace Arcade.Tasks
 
         public static async Task<bool> Main()
         {
-            if (!SiuneSession.IsAuthenticated(24))
+            if (!AuthCoreSession.IsAuthenticated(2))
                 return false;
 
             if (!GoldenSaucer.InZone)
@@ -43,6 +45,7 @@ namespace Arcade.Tasks
             }
 
             Mgp.UpdateTimeSpan();
+            Mgp.UpdateStats();
 
             if (Talk.DialogOpen)
             {
@@ -63,11 +66,11 @@ namespace Arcade.Tasks
 
             if (await MiniCactpot.Play()) return true;
 
-            if (Settings.Instance.JumboCactpot)
-            {
-                if (await JumboCactpot.BuyTicket()) return true;
-                if (await JumboCactpot.CollectReward()) return true;
-            }
+            //if (Settings.Instance.JumboCactpot)
+            //{
+            //    if (await JumboCactpot.BuyTicket()) return true;
+            //    if (await JumboCactpot.CollectReward()) return true;
+            //}
 
             if (DateTime.Now < TimeToSwitchGame)
             {
@@ -94,11 +97,11 @@ namespace Arcade.Tasks
 
             var gamesList = GenerateGamesList;
             var count = gamesList.Count;
-
             var randomIndex = new Random().Next(count);
 
             if (count == 1)
             {
+                PlayingOnlyOneGame = true;
                 if (Settings.Instance.CuffACurr && await CuffACur.Play()) return true;
                 if (Settings.Instance.CrystalTowerStryker && await CrystalTowerStryker.Play()) return true;
                 if (Settings.Instance.MonsterToss && await MonsterToss.Play()) return true;
@@ -114,7 +117,8 @@ namespace Arcade.Tasks
 
             Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogPickingGame} {newGame}");
             TimeToSwitchGame = DateTime.Now.AddMinutes(new Random().Next(Settings.Instance.MinMinutes, Settings.Instance.MaxMinutes));
-            Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogSwitchingGamesAgainAt} {TimeToSwitchGame:HH:mm}.");
+            SwitchedGame = true;
+            Logging.Write(Colors.DodgerBlue, $@"{Language.Instance.LogSwitchingGamesAgainAt} {TimeToSwitchGame:HH:mm:ss}.");
 
             if (newGame == Cuff)
             {

@@ -68,6 +68,7 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -79,16 +80,17 @@
 
                     <userControls:Numeric Grid.Row="0" Grid.Column="1" Margin="2,3" TextBlockValue="" TextBoxWidth="50" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MinMinutes, Mode=TwoWay}" />
                     <userControls:Numeric Grid.Row="1" Grid.Column="1" Margin="2,0" TextBlockValue="" TextBoxWidth="50" MinValue="1" MaxValue="99999999" Value="{Binding Settings.Instance.MaxMinutes, Mode=TwoWay}" />
-            
-                    <CheckBox Grid.Row="2" Margin="0,5,0,0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource Checkbox}" Content="{Binding Languages.RandomizeScores}" IsChecked="{Binding Settings.RandomizeScores, Mode=TwoWay}" />
-                    <CheckBox Grid.Row="3" Margin="0,5,0,0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Languages.FastMode}" IsChecked="{Binding Settings.Instance.FastMode, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+
+                    <CheckBox Grid.Row="2" Margin="0,5,0,0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource Checkbox}" Content="{Binding Languages.NeverUseSameLocationTwice}" IsChecked="{Binding Settings.NeverUseSameMachineTwiceInARow, Mode=TwoWay}" />
+                    <CheckBox Grid.Row="3" Margin="0,5,0,0" Grid.Column="0" Grid.ColumnSpan="2" Style="{DynamicResource Checkbox}" Content="{Binding Languages.RandomizeScores}" IsChecked="{Binding Settings.RandomizeScores, Mode=TwoWay}" />
+                    <CheckBox Grid.Row="4" Margin="0,5,0,0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Languages.FastMode}" IsChecked="{Binding Settings.Instance.FastMode, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
                 </Grid>
             </StackPanel>
 
             <StackPanel Margin="5,5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
 
                 <CheckBox Margin="0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayMiniCactpot}" IsChecked="{Binding Settings.Instance.MiniCactpot, Mode=TwoWay}" />
-                <CheckBox Margin="0,0,0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayJumboCactpot}" IsChecked="{Binding Settings.Instance.JumboCactpot, Mode=TwoWay}" />
+                <CheckBox Visibility="Hidden" Margin="0,0,0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayJumboCactpot}" IsChecked="{Binding Settings.Instance.JumboCactpot, Mode=TwoWay}" />
 
                
                 <StackPanel Margin="0,5" Orientation="Horizontal">

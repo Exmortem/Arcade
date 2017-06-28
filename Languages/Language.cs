@@ -306,6 +306,28 @@ namespace Arcade.Languages
             }
         }
 
+        public string NeverUseSameLocationTwice
+        {
+            get
+            {
+                switch (ClientLanguage)
+                {
+                    case Languages.Japanese:
+                        return "Never Use The Same Machine Twice In A Row";
+                    case Languages.English:
+                        return "Never Use The Same Machine Twice In A Row";
+                    case Languages.German:
+                        return "Never Use The Same Machine Twice In A Row";
+                    case Languages.French:
+                        return "Never Use The Same Machine Twice In A Row";
+                    case Languages.Chinese:
+                        return "同一游戏不连续使用同一台机器";
+                    default:
+                        return "Never Use The Same Machine Twice In A Row";
+                }
+            }
+        }
+
         public string RandomizeScores
         {
             get

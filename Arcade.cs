@@ -12,7 +12,8 @@ using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Navigation;
-using Siune.Client;
+using ff14bot.Pathing.Service_Navigation;
+using AuthCoreClient;
 using TreeSharp;
 using LoginWindow = Arcade.Views.LoginWindow;
 
@@ -22,16 +23,17 @@ namespace Arcade
     {
         public Arcade()
         {
-            SiuneSession.RegisterProduct(24, "Arcade", Log);
-            SiuneSession.SetProduct(24, Settings.Instance.Key);
+            AuthCoreSession.RegisterProduct(2, "Arcade", Log);
+            AuthCoreSession.SetProduct(2, Settings.Instance.Key);
             ArcadeViewModel.Instance.RunningTime = "00:00:00";
 
+            if (!Environment.Is64BitProcess)
+            {
+                Logging.Write(Colors.Red, $@"[Arcade] Arcade Will Only Function Correctly On The 64 Bit Client");
+            }
+
             var patternFinder = new GreyMagic.PatternFinder(Core.Memory);
-
-            var intPtr = patternFinder.Find(Environment.Is64BitProcess ? 
-                "Search 48 8D 0D ? ? ? ? 83 CA FF 89 05 ? ? ? ? Add 3 TraceRelative" :
-                "Search 56 8B F1 75 ?? 83 0D ?? ?? ?? ?? 01 6A FF B9 ?? ?? ?? ?? Add F Read32");
-
+            var intPtr = patternFinder.Find("Search 48 8D 05 ? ? ? ? 48 83 C4 20 5F C3 41 B8 ? ? ? ? Add 3 TraceRelative");
             var languageByte = Core.Memory.Read<byte>(intPtr);
 
             switch (languageByte)
@@ -69,7 +71,7 @@ namespace Arcade
 
         public void Start()
         {
-            Navigator.NavigationProvider = new GaiaNavigator { PathPrecision = 0.8f };
+            Navigator.NavigationProvider = new ServiceNavigationProvider();
             Navigator.PlayerMover = new SlideMover();
 
             if (Settings.Instance.UseOverlay)
@@ -83,11 +85,13 @@ namespace Arcade
             Behaviors.CurrentGame = "None";
             Behaviors.TimeToSwitchGame = DateTime.Now;
 
+            Mgp.MgpStart = Mgp.CurrentMgp;
+
             Application.Current.Dispatcher.Invoke(delegate
             {
                 ArcadeViewModel.Instance.MgpGained = 0;
                 ArcadeViewModel.Instance.GamesPlayed = 0;
-                ArcadeViewModel.Instance.MgpPerHour = 0;               
+                ArcadeViewModel.Instance.MgpPerHour = 0;
             });
         }
 
@@ -103,8 +107,7 @@ namespace Arcade
                 return;
             }
 
-            ((GaiaNavigator)Navigator.NavigationProvider).Dispose();
-            Navigator.NavigationProvider = null;
+            (Navigator.NavigationProvider as IDisposable)?.Dispose();
         }
 
         private Composite _root;

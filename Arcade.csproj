@@ -32,15 +32,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AuthCoreClient">
+      <HintPath>C:\AuthCoreClient\AuthCoreClient\bin\Debug\AuthCoreClient.dll</HintPath>
+    </Reference>
     <Reference Include="GreyMagic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Reborn\GreyMagic.dll</HintPath>
+      <HintPath>C:\Rb64Beta\GreyMagic.dll</HintPath>
     </Reference>
-    <Reference Include="RebornBuddy">
-      <HintPath>..\..\Reborn\RebornBuddy.exe</HintPath>
-    </Reference>
-    <Reference Include="Siune.Client">
-      <HintPath>..\..\Siune\Siune.Client\bin\Release\Siune.Client.dll</HintPath>
+    <Reference Include="RebornBuddy, Version=1.0.472.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Rb64Beta\RebornBuddy.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

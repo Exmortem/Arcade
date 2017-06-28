@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using Arcade.Models;
-using Siune.Client;
+using AuthCoreClient;
 
 namespace Arcade.Views
 {
@@ -11,7 +11,7 @@ namespace Arcade.Views
         {
             InitializeComponent();
 
-            if (!SiuneSession.IsAuthenticated(24))
+            if (!AuthCoreSession.IsAuthenticated(2))
             {
                 Arcade.Login.ShowDialog();
             }

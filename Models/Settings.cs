@@ -96,6 +96,20 @@ namespace Arcade.Models
             }
         }
 
+        private bool _neverUseSameMachineTwiceInARow;
+
+        [Setting]
+        [DefaultValue(false)]
+        public bool NeverUseSameMachineTwiceInARow
+        {
+            get { return _neverUseSameMachineTwiceInARow; }
+            set
+            {
+                _neverUseSameMachineTwiceInARow = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _miniCactpot;
         private bool _miniCactpotPlayedToday;
 

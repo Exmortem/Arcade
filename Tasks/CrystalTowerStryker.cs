@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Arcade.Models;
@@ -6,6 +7,8 @@ using Arcade.Utilities;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using ff14bot;
+using ff14bot.Enums;
+using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.RemoteWindows;
 
@@ -13,8 +16,22 @@ namespace Arcade.Tasks
 {
     public static class CrystalTowerStryker
     {
+        static CrystalTowerStryker()
+        {
+            Location = Locations.FirstOrDefault();
+            LastLocation = Locations.FirstOrDefault();
+        }
+
         private const int Id = 2005035;
-        private static readonly Vector3 Location = new Vector3() { X = 25.18871f, Y = 4.91873f, Z = 92.24194f };
+
+        private static Vector3 Location { get; set; }
+        private static Vector3 LastLocation { get; set; }
+
+        private static readonly List<Vector3> Locations = new List<Vector3>()
+        {
+            new Vector3() { X = 25.18871f, Y = 4.91873f, Z = 92.24194f },
+            new Vector3() { X = 24.33813f, Y = 4.91873f, Z = 102.5402f },
+        };
 
         private static bool IsOpen
         {
@@ -26,6 +43,24 @@ namespace Arcade.Tasks
 
         public static async Task<bool> Play()
         {
+            var count = Locations.Count;
+            var randomIndex = new Random().Next(count);
+
+            if (Behaviors.SwitchedGame && !Behaviors.PlayingOnlyOneGame)
+            {
+                if (Settings.Instance.NeverUseSameMachineTwiceInARow)
+                {
+                    Location = Locations.FirstOrDefault(r => r != LastLocation);
+                }
+                else
+                {
+                    Location = Locations[randomIndex];
+                }
+
+                Behaviors.SwitchedGame = false;
+                LastLocation = Location;
+            }
+
             await Movement.MoveToLocation(Location, 3);
 
             await OpenClosestMachine();
@@ -51,13 +86,14 @@ namespace Arcade.Tasks
                 Core.Player.Face(closestMachine);
 
             closestMachine?.Interact();
-            await Coroutine.Wait(5000, () => SelectString.IsOpen);
+            await Coroutine.Wait(5000, () => SelectString.IsOpen && IsOpen);
             SelectString.ClickSlot(0);
-            await Coroutine.Wait(2000, () => Core.Memory.Read<byte>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("Hummer").Pointer + 0xD0)) == 4);
 
+            await Coroutine.Wait(2000, () => Core.Memory.Read<byte>(RaptureAtkUnitManager.GetWindowByName("Hummer").Pointer + 0x189) == 1);
+            
             if (!Settings.Instance.FastMode)
             {
-                var random = new Random().Next(1500, 3000);
+                var random = new Random().Next(500, 3000);
                 await Coroutine.Sleep(random);
             }
         }

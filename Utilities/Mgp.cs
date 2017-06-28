@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using Arcade.Languages;
@@ -14,6 +15,18 @@ namespace Arcade.Utilities
         private static readonly Regex MgpRegex = new Regex(@"You\sobtain\s([0-9]*)\sMGP");
         private static readonly Regex CnMgpRegex = new Regex(@"了([0-9]*)金");
         private static readonly Regex GermanMgpRegex = new Regex(@"Du\shast\s([0-9]*)\sMGP");
+        public static uint MgpStart;
+
+        public static uint CurrentMgp
+        {
+            get
+            {
+                var firstOrDefault = InventoryManager.GetBagByInventoryBagId(ff14bot.Enums.InventoryBagId.Currency)
+                    .FilledSlots.FirstOrDefault(r => r.EnglishName == "MGP");
+
+                return firstOrDefault?.Count ?? 0;
+            }
+        }
 
         public static void MessageReceived(object sender, ChatEventArgs chatEventArgs)
         {
@@ -51,8 +64,6 @@ namespace Arcade.Utilities
             Application.Current.Dispatcher.Invoke(delegate
             {
                 ArcadeViewModel.Instance.GamesPlayed++;
-                ArcadeViewModel.Instance.MgpGained = ArcadeViewModel.Instance.MgpGained + int.Parse(match.Groups[1].Value);
-                ArcadeViewModel.Instance.MgpPerHour = (int)(ArcadeViewModel.Instance.MgpGained/(DateTime.Now - StartTime).TotalHours);
             });
         }
 
@@ -62,6 +73,15 @@ namespace Arcade.Utilities
             {
                 var timeSpan = (DateTime.Now - StartTime);
                 ArcadeViewModel.Instance.RunningTime = new TimeSpan(timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds).ToString();
+            });
+        }
+
+        public static void UpdateStats()
+        {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                ArcadeViewModel.Instance.MgpGained = (int)(CurrentMgp - MgpStart);
+                ArcadeViewModel.Instance.MgpPerHour = (int)(ArcadeViewModel.Instance.MgpGained / (DateTime.Now - StartTime).TotalHours);
             });
         }
     }

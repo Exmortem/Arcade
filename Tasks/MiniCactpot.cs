@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Arcade.Languages;
 using Arcade.Models;
 using Arcade.Utilities;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using ff14bot;
+using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.RemoteWindows;
 
@@ -19,7 +21,7 @@ namespace Arcade.Tasks
         private static readonly Vector3 MiniCactpotBrokerLocation = new Vector3() { X = -46.35843f, Y = 1.6f, Z = 20.86036f };
 
         public static async Task<bool> Play()
-        {
+        {           
             if (!Settings.Instance.MiniCactpot)
                 return false;
 
@@ -29,7 +31,8 @@ namespace Arcade.Tasks
             if (!await OpenGame())
                 return false;
 
-            while (await Solve())
+            // This is what we changed (used to be while (await Solve())
+            while (CactpotIndexValues.Values.Count(r => r > 0) < 4)
             {
                 await Coroutine.Yield();
             }
@@ -125,14 +128,12 @@ namespace Arcade.Tasks
 
             // Pick a slot from the best row
             var bestRow = GetBestRowValue();
-            //Logging.Write(Colors.Red, $@"[Arcade] Best row value: {bestRow}");
 
             foreach (var scratchOff in CactpotRows[bestRow])
             {
                 if (GetValueOfIndex(scratchOff) > 0)
                     continue;
 
-                //Logging.Write(Colors.Red, $@"[Arcade] Picking Slot: {scratchOff}");
                 return await TurnASlot((uint) scratchOff);
             }
 
@@ -245,34 +246,43 @@ namespace Arcade.Tasks
             }
         }
 
-        private static int ValueOfIndex0 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3B8) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x23C);
+        private static int ValueOfIndex0 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3BC);
 
 
-        private static int ValueOfIndex1 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3BC) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x240);
+        private static int ValueOfIndex1 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C0);
 
 
-        private static int ValueOfIndex2 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C0) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x244);
+        private static int ValueOfIndex2 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C4);
 
-        private static int ValueOfIndex3 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C4) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x248);
+        private static int ValueOfIndex3 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C8);
 
-        private static int ValueOfIndex4 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C8) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x24C);
+        private static int ValueOfIndex4 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3CC);
 
-        private static int ValueOfIndex5 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3CC) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x250);
+        private static int ValueOfIndex5 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D0);
 
-        private static int ValueOfIndex6 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D0) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x254);
+        private static int ValueOfIndex6 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D4);
 
-        private static int ValueOfIndex7 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D4) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x258);
+        private static int ValueOfIndex7 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D8);
 
-        private static int ValueOfIndex8 => Environment.Is64BitProcess ? Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D8) :
-                                                                         Core.Memory.Read<int>(Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x4C) + 0x10) + 0x25C);
+        private static int ValueOfIndex8 => Core.Memory.Read<int>(
+            Core.Memory.Read<IntPtr>(
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3DC);
 
 
         private static readonly List<int> Values = new List<int>();
@@ -288,13 +298,7 @@ namespace Arcade.Tasks
                 valuesDict.Add(row.Key, value);
             }
 
-            //foreach (var row in valuesDict)
-            //{
-            //    Logging.Write(Colors.BlueViolet, $@"[Arcade] {row.Key} : {row.Value}");
-            //}
-
             var bestRow = valuesDict.OrderByDescending(r => r.Value).First();
-            //Logging.Write(Colors.BlueViolet, $@"[Arcade] Best row value: {bestRow.Value}");
             return bestRow.Key;
         }
 

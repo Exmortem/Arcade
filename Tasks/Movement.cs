@@ -3,8 +3,9 @@ using Arcade.Utilities;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using ff14bot;
+using ff14bot.Behavior;
 using ff14bot.Managers;
-using ff14bot.Navigation;
+using ff14bot.Pathing;
 
 namespace Arcade.Tasks
 {
@@ -15,22 +16,20 @@ namespace Arcade.Tasks
             if (Core.Player.Location.Distance(location) <= precision)
                 return true;
 
-            while (Core.Player.Location.Distance(location) > precision)
+            if (Core.Player.Location.Distance(location) > 50)
             {
-                if (Core.Player.Location.Distance(location) > 50)
+                if (ActionManager.CanCast(3, Core.Me))
                 {
-                    if (Actionmanager.CanCast(3, Core.Me))
-                    {
-                        Actionmanager.DoAction(3, Core.Me);
-                    }
+                    ActionManager.DoAction(3, Core.Me);
                 }
+            }
 
-                Navigator.MoveTo(location);
+            while (await CommonTasks.MoveAndStop(new MoveToParameters(location), 3))
+            {
                 Mgp.UpdateTimeSpan();
                 await Coroutine.Yield();
             }
-            
-            Navigator.Clear();
+     
             return true;
         }
     }

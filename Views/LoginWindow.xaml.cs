@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using Arcade.Models;
-using Siune.Client;
+using AuthCoreClient;
 
 namespace Arcade.Views
 {
@@ -29,7 +29,7 @@ namespace Arcade.Views
 
             Settings.Instance.Key = TxtKey.Text;
             Settings.Instance.Email = TxtEmail.Text;
-            SiuneSession.SetProduct(24, Settings.Instance.Key);
+            AuthCoreSession.SetProduct(2, Settings.Instance.Key);
             Settings.Instance.Save();
         }
 
@@ -45,10 +45,10 @@ namespace Arcade.Views
 
             Settings.Instance.Key = TxtKey.Text;
             Settings.Instance.Email = TxtEmail.Text;
-            SiuneSession.SetProduct(24, Settings.Instance.Key);
+            AuthCoreSession.SetProduct(2, Settings.Instance.Key);
             Settings.Instance.Save();
 
-            if (SiuneSession.IsAuthenticated(24))
+            if (AuthCoreSession.IsAuthenticated(2))
             {
                 Close();
             }
