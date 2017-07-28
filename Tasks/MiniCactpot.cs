@@ -31,8 +31,7 @@ namespace Arcade.Tasks
             if (!await OpenGame())
                 return false;
 
-            // This is what we changed (used to be while (await Solve())
-            while (CactpotIndexValues.Values.Count(r => r > 0) < 4)
+            while (await Solve())
             {
                 await Coroutine.Yield();
             }
@@ -134,11 +133,14 @@ namespace Arcade.Tasks
                 if (GetValueOfIndex(scratchOff) > 0)
                     continue;
 
-                return await TurnASlot((uint) scratchOff);
+                if (await TurnASlot((uint) scratchOff))
+                {
+                    return true;
+                }
             }
 
             var index = CactpotIndexValues.FirstOrDefault(r => r.Value == 0);
-            return await TurnASlot((uint)index.Key);
+            return await TurnASlot((uint) index.Key);
         }
 
         private static async Task<bool> PickARow()
@@ -172,7 +174,8 @@ namespace Arcade.Tasks
         private static async Task<bool> TurnASlot(uint index)
         {
             var window = RaptureAtkUnitManager.GetWindowByName("LotteryDaily");
-            WindowInteraction.SendAction(window, 2, 3, 1, 3, index);
+            //WindowInteraction.SendAction(window, 2, 3, 1, 3, index);
+            window.SendAction(2, 3, 1, 3, index);
             await Coroutine.Sleep(1500);
             return true;
         }
@@ -247,42 +250,42 @@ namespace Arcade.Tasks
         }
 
         private static int ValueOfIndex0 => Core.Memory.Read<int>(
-            Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3BC);
+            Core.Memory.Read<IntPtr>(Core.Memory.Read<IntPtr>(
+                RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3B0);
 
 
         private static int ValueOfIndex1 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C0);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3B4);
 
 
         private static int ValueOfIndex2 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C4);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3B8);
 
         private static int ValueOfIndex3 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C8);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3BC);
 
         private static int ValueOfIndex4 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3CC);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C0);
 
         private static int ValueOfIndex5 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D0);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C4);
 
         private static int ValueOfIndex6 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D4);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3C8);
 
         private static int ValueOfIndex7 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D8);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3CC);
 
         private static int ValueOfIndex8 => Core.Memory.Read<int>(
             Core.Memory.Read<IntPtr>(
-                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3DC);
+                Core.Memory.Read<IntPtr>(RaptureAtkUnitManager.GetWindowByName("LotteryDaily").Pointer + 0x70) + 0xB0) + 0x3D0);
 
 
         private static readonly List<int> Values = new List<int>();

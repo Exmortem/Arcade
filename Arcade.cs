@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
+using Arcade.AuthCore;
 using Arcade.Languages;
 using Arcade.Models;
 using Arcade.Overlay;
@@ -13,7 +14,6 @@ using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Navigation;
 using ff14bot.Pathing.Service_Navigation;
-using AuthCoreClient;
 using TreeSharp;
 using LoginWindow = Arcade.Views.LoginWindow;
 

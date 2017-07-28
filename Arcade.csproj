@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AuthCoreClient">
-      <HintPath>C:\AuthCoreClient\AuthCoreClient\bin\Debug\AuthCoreClient.dll</HintPath>
-    </Reference>
     <Reference Include="GreyMagic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Rb64Beta\GreyMagic.dll</HintPath>
@@ -60,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arcade.cs" />
+    <Compile Include="AuthCore\AuthCoreSession.cs" />
     <Compile Include="Commands\AwaitableDelegateCommand.cs" />
     <Compile Include="Commands\AwaitableDelegateCommandT.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
@@ -68,6 +66,7 @@
     <Compile Include="Commands\IAsyncCommandT.cs" />
     <Compile Include="Commands\IRaiseCanExecuteChanged.cs" />
     <Compile Include="Languages\Language.cs" />
+    <Compile Include="Models\ClientSession.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Overlay\ArcadeOverlay.cs" />
     <Compile Include="Overlay\ArcadeOverlayUiComponent.cs" />

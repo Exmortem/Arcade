@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Arcade.AuthCore;
 using Arcade.Languages;
 using Arcade.Models;
 using Arcade.Utilities;
@@ -10,7 +11,6 @@ using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.RemoteWindows;
-using AuthCoreClient;
 
 namespace Arcade.Tasks
 {

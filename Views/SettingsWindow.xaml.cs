@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Arcade.AuthCore;
 using Arcade.Models;
-using AuthCoreClient;
 
 namespace Arcade.Views
 {
