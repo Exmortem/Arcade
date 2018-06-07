@@ -39,7 +39,7 @@ namespace Arcade.Tasks
             if (!AuthCoreSession.IsAuthenticated(2))
                 return false;
 
-            if (!GoldenSaucer.InZone)
+            if (!GoldenSaucer.InZone && !Settings.Instance.FarmCuffACurInHouse)
             {
                 return await GoldenSaucer.TeleportToSaucer();
             }
@@ -64,14 +64,16 @@ namespace Arcade.Tasks
                 }
             }
 
+            if (Settings.Instance.FarmCuffACurInHouse)
+            {
+                if (await CuffACur.Play()) return true;
+
+                return true;
+            }
+
             if (await MiniCactpot.Play()) return true;
 
-            //if (Settings.Instance.JumboCactpot)
-            //{
-            //    if (await JumboCactpot.BuyTicket()) return true;
-            //    if (await JumboCactpot.CollectReward()) return true;
-            //}
-
+            #region Game Switching
             if (DateTime.Now < TimeToSwitchGame)
             {
                 if (CurrentGame == Cuff)
@@ -94,6 +96,7 @@ namespace Arcade.Tasks
                     return await MooglesPaw.Play();
                 }
             }
+            #endregion
 
             var gamesList = GenerateGamesList;
             var count = gamesList.Count;

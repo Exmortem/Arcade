@@ -11,6 +11,7 @@ using Clio.Utilities;
 using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;
+using ff14bot.Objects;
 using ff14bot.RemoteWindows;
 
 namespace Arcade.Tasks
@@ -24,14 +25,15 @@ namespace Arcade.Tasks
         }
         
         private const int Id = 2005029;
+        private const int HouseId = 197370;
 
         private static Vector3 Location { get; set; }
         private static Vector3 LastLocation { get; set; }
 
         private static readonly List<Vector3> Locations = new List<Vector3>()
         {
-            new Vector3() { X = 13.04904f, Y = -5.000005f, Z = -52.66679f },
-            new Vector3() { X = 24.82569f, Y = -5.000007f, Z = -50.57803f },
+            new Vector3 { X = 13.04904f, Y = -5.000005f, Z = -52.66679f },
+            new Vector3 { X = 24.82569f, Y = -5.000007f, Z = -50.57803f },
         };
 
         private static bool IsOpen
@@ -47,23 +49,30 @@ namespace Arcade.Tasks
             var count = Locations.Count;
             var randomIndex = new Random().Next(count);
 
-            if (Behaviors.SwitchedGame && !Behaviors.PlayingOnlyOneGame)
+            if (!Settings.Instance.FarmCuffACurInHouse)
             {
-                if (Settings.Instance.NeverUseSameMachineTwiceInARow)
+                if (Behaviors.SwitchedGame && !Behaviors.PlayingOnlyOneGame)
                 {
-                    Location = Locations.FirstOrDefault(r => r != LastLocation);
-                }
-                else
-                {
-                    Location = Locations[randomIndex];
+                    Location = Settings.Instance.NeverUseSameMachineTwiceInARow
+                        ? Locations.FirstOrDefault(r => r != LastLocation)
+                        : Locations[randomIndex];
+
+                    Behaviors.SwitchedGame = false;
+                    LastLocation = Location;
                 }
 
-                Behaviors.SwitchedGame = false;
-                LastLocation = Location;
+                await Movement.MoveToLocation(Location, 3);
             }
+            else
+            {
+                var machine = GameObjectManager.GetObjectsByNPCId(HouseId).OrderBy(r => r.Distance2D()).FirstOrDefault();
 
-            await Movement.MoveToLocation(Location, 3);
+                if (machine == null)
+                    return false;
 
+                await Movement.MoveToLocation(machine.Location, 3);
+            }
+            
             await OpenClosestMachine();
 
             if (!IsOpen)
@@ -78,7 +87,9 @@ namespace Arcade.Tasks
             if (IsOpen)
                 return;
 
-            var closestMachine = GameObjectManager.GetObjectsByNPCId(Id).OrderBy(r => r.Distance2D()).FirstOrDefault();
+            var closestMachine = Settings.Instance.FarmCuffACurInHouse
+                ? GameObjectManager.GetObjectsByNPCId(HouseId).OrderBy(r => r.Distance2D()).FirstOrDefault() 
+                : GameObjectManager.GetObjectsByNPCId(Id).OrderBy(r => r.Distance2D()).FirstOrDefault();
 
             if (closestMachine == null)
                 return;
@@ -86,7 +97,7 @@ namespace Arcade.Tasks
             if (!Core.Player.IsFacing(closestMachine.Location))
                 Core.Player.Face(closestMachine);
 
-            closestMachine?.Interact();
+            closestMachine.Interact();
             await Coroutine.Wait(5000, () => SelectString.IsOpen && IsOpen);
             SelectString.ClickSlot(0);
 

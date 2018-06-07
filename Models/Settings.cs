@@ -338,6 +338,20 @@ namespace Arcade.Models
             }
         }
 
+        private bool _farmCuffACurInHouse;
+
+        [Setting]
+        [DefaultValue(false)]
+        public bool FarmCuffACurInHouse
+        {
+            get { return _farmCuffACurInHouse; }
+            set
+            {
+                _farmCuffACurInHouse = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

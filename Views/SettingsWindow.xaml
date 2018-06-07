@@ -54,6 +54,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
                 
             <CheckBox Margin="5,5" Grid.Row="1" Grid.Column="0" Content="{Binding Languages.PlayCuffaCurr}" IsChecked="{Binding Settings.Instance.CuffACurr, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
@@ -61,7 +62,11 @@
             <CheckBox Margin="5,0" Grid.Row="2" Grid.Column="0" Content="{Binding Languages.PlayMonsterToss}" IsChecked="{Binding Settings.Instance.MonsterToss, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
             <CheckBox Margin="5,0" Grid.Row="2" Grid.Column="1" Content="{Binding Languages.PlayMooglesPaw}" IsChecked="{Binding Settings.Instance.MooglesPaw, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
 
-            <StackPanel Margin="5,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+            <StackPanel Margin="0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                <CheckBox Margin="5,5" Content="Farm Cuff-a-Curr In House (Manually Move)" IsChecked="{Binding Settings.Instance.FarmCuffACurInHouse, Mode=TwoWay}" Style="{DynamicResource Checkbox}" />
+            </StackPanel>
+            
+            <StackPanel Margin="5,5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -87,7 +92,7 @@
                 </Grid>
             </StackPanel>
 
-            <StackPanel Margin="5,5" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+            <StackPanel Margin="5,5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
 
                 <CheckBox Margin="0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayMiniCactpot}" IsChecked="{Binding Settings.Instance.MiniCactpot, Mode=TwoWay}" />
                 <CheckBox Visibility="Hidden" Margin="0,0,0,5" Style="{DynamicResource Checkbox}" Content="{Binding Languages.PlayJumboCactpot}" IsChecked="{Binding Settings.Instance.JumboCactpot, Mode=TwoWay}" />
@@ -99,27 +104,27 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Margin="5,0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <StackPanel Margin="5,0" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <TextBlock Text="{Binding Languages.MgpGainedSoFar}" Foreground="White" />
                 <TextBlock Text="{Binding Instance.MgpGained}" Foreground="White" />
             </StackPanel>
 
-            <StackPanel Margin="5,0" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <StackPanel Margin="5,0" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <TextBlock Text="{Binding Languages.MgpPerHour}" Foreground="White" />
                 <TextBlock Text="{Binding Instance.MgpPerHour}" Foreground="White" />
             </StackPanel>
 
-            <StackPanel Margin="5,0" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <StackPanel Margin="5,0" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <TextBlock Text="{Binding Languages.GamesPlayed}" Foreground="White" />
                 <TextBlock Text="{Binding Instance.GamesPlayed}" Foreground="White" />
             </StackPanel>
 
-            <StackPanel Margin="5,0" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <StackPanel Margin="5,0" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <TextBlock Text="{Binding Languages.RunningTime}" Foreground="White" />
                 <TextBlock Text="{Binding Instance.RunningTime}" Foreground="White" />
             </StackPanel>
 
-            <CheckBox Margin="5,5,0,0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Languages.UseOverlay}" Style="{DynamicResource Checkbox}" Grid.Row="9" IsChecked="{Binding Settings.UseOverlay, Mode=TwoWay}" />
+            <CheckBox Margin="5,5,0,0" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Languages.UseOverlay}" Style="{DynamicResource Checkbox}" Grid.Row="10" IsChecked="{Binding Settings.UseOverlay, Mode=TwoWay}" />
 
         </Grid>
     </StackPanel>
